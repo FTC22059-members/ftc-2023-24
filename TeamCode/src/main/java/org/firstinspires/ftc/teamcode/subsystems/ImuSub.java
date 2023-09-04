@@ -1,5 +1,7 @@
-package org.firstinspires.ftc.teamcode.library;
+package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -8,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-public class Imu {
+public class ImuSub extends SubsystemBase {
 
     private HardwareMap hardwareMap;
     private Telemetry telemetry;
@@ -22,13 +24,10 @@ public class Imu {
      * @param hardwareMapImport The hardware map to be used in imu
      * @param telemetryImport The telemetry to be used for printing things
      */
-    public Imu(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
+    public ImuSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
         this.hardwareMap = hardwareMapImport;
         this.telemetry = telemetryImport;
-    }
 
-
-    public void init() {
         imu = hardwareMap.get(IMU.class, "imu");
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
@@ -41,17 +40,13 @@ public class Imu {
         telemetry.addData("IMU Calibrating Successful?", initSuccessful);
     }
 
-    /**
-     * Pre-loop code for Imu. Currently does nothing.
-     */
-    public void preLoop() {
 
-    }
 
     /**
-     * Code to run the IMUS's loop. Currently prints heading.
+     * Code to run the IMU's loop. Currently prints heading.
      */
-    public void imuLoop() {
+    @Override
+    public void periodic() {
         telemetry.addData("IMU heading", globalAngle);
     }
 

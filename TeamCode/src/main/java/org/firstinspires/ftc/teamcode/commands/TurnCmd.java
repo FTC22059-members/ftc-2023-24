@@ -4,8 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
-
-import java.util.function.DoubleSupplier;
+import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 
 public class TurnCmd extends CommandBase {
 
@@ -13,22 +12,23 @@ public class TurnCmd extends CommandBase {
     private final double turnAngle;
     private final double turnSpeed;
     private Telemetry telemetry;
-    private DoubleSupplier imuAngle;
+    private ImuSub imu;
 
-    public TurnCmd(double ta, double ts, DrivetrainSub dts, Telemetry tm, DoubleSupplier imua) {
-        turnAngle = ta;
-        turnSpeed = ts;
-        drivetrainSub = dts;
-        telemetry = tm;
-        imuAngle = imua;
+    public TurnCmd(double p_turnAngle, double p_turnSpeed, DrivetrainSub p_drivetrainSub, ImuSub p_imu, Telemetry p_telemetry) {
+        turnAngle = p_turnAngle;
+        turnSpeed = p_turnSpeed;
+        drivetrainSub = p_drivetrainSub;
+        imu = p_imu;
+        telemetry = p_telemetry;
 
-        addRequirements(dts);
+        addRequirements(p_drivetrainSub);
     }
 
     @Override
     public void initialize() {
         drivetrainSub.resetEncoders();
         drivetrainSub.move(0, turnSpeed);
+        imu.resetAngle();
     }
 
     @Override
@@ -39,9 +39,9 @@ public class TurnCmd extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        System.out.println("IMU Angle: " + imuAngle.getAsDouble());
-        System.out.println("Is done? "+ (Math.abs(imuAngle.getAsDouble()) >= turnAngle));
-        return Math.abs(imuAngle.getAsDouble()) >= turnAngle;
+        System.out.println("IMU Angle: " + imu.getAngle());
+        System.out.println("Is done? "+ (Math.abs(imu.getAngle()) >= turnAngle));
+        return Math.abs(imu.getAngle()) >= turnAngle;
     }
 
 }

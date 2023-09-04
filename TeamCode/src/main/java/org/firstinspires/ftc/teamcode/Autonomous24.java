@@ -1,28 +1,37 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
+import org.firstinspires.ftc.teamcode.commands.TurnCmd;
+import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 
 @Autonomous(name = "Autonomous 2023-24")
 public class Autonomous24 extends CommandOpMode {
     private DrivetrainSub drive;
-    private DriveDistanceCmd driveCmd;
+    private DriveDistanceCmd driveDistanceCmd;
+    private TurnCmd turnCmd;
+    private ImuSub imu;
+
     private boolean fieldCentric = true;
     @Override
     public void initialize(){
+        //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
-        driveCmd = new DriveDistanceCmd(5, 0.6, drive, telemetry);
-        driveCmd.initialize();
+        imu = new ImuSub(hardwareMap, telemetry);
 
-        register(drive);
-        drive.setDefaultCommand(driveCmd);
-    }
+        //Setting up Cmds
+        driveDistanceCmd = new DriveDistanceCmd(5, 0.6, drive, telemetry);
+        turnCmd = new TurnCmd(80,0.6,drive,imu,telemetry);
 
-    @Override
-    public void run(){
-
+        waitForStart();
+        //driving in a square
+        schedule(new SequentialCommandGroup(driveDistanceCmd, turnCmd,
+                                            driveDistanceCmd, turnCmd,
+                                            driveDistanceCmd, turnCmd,
+                                            driveDistanceCmd, turnCmd));
     }
 }

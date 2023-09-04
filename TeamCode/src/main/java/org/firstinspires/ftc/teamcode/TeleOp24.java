@@ -2,16 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
-import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.DriveCmd;
-import org.firstinspires.ftc.teamcode.commands.TurnCmd;
-import org.firstinspires.ftc.teamcode.library.Imu;
+import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 
 
@@ -24,12 +20,10 @@ public class TeleOp24 extends CommandOpMode {
     private DrivetrainSub drive;
     private DriveCmd driveCmd;
     private boolean fieldCentric = true;
-    private Imu robotImu;
+    private ImuSub robotImu;
     @Override
     public void initialize(){
-        robotImu = new Imu(hardwareMap, telemetry);
-        robotImu.init();
-
+        robotImu = new ImuSub(hardwareMap, telemetry);
 
         driverOp = new GamepadEx(gamepad1);
         toolOp = new GamepadEx(gamepad2);
