@@ -24,7 +24,7 @@ public class Autonomous24 extends CommandOpMode {
         imu = new ImuSub(hardwareMap, telemetry);
 
         //Setting up Cmds
-        driveDistanceCmd = new DriveDistanceCmd(5, 0.6, drive, telemetry);
+        driveDistanceCmd = new DriveDistanceCmd(24, 0.6, drive, telemetry);
         turnCmd = new TurnCmd(80,0.6,drive,imu,telemetry);
 
         waitForStart();
