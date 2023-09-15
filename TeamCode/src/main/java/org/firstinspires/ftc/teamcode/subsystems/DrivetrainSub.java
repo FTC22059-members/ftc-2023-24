@@ -20,10 +20,10 @@ public class DrivetrainSub extends SubsystemBase {
     MecanumDrive drive;
 
     public DrivetrainSub(HardwareMap hardwareMap, Telemetry tm) {
-        this.frontLeft = new Motor(hardwareMap, "frontLeft");
-        this.frontRight = new Motor(hardwareMap, "frontRight");
-        this.backLeft = new Motor(hardwareMap, "backLeft");
-        this.backRight = new Motor(hardwareMap, "backRight");
+        this.frontLeft = new Motor(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
+        this.frontRight = new Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312);
+        this.backLeft = new Motor(hardwareMap, "backLeft", Motor.GoBILDA.RPM_312);
+        this.backRight = new Motor(hardwareMap, "backRight", Motor.GoBILDA.RPM_312);
 
         this.drive = new MecanumDrive(this.frontLeft, this.frontRight, this.backLeft, this.backRight);
         this.drive.setMaxSpeed(DriveConstants.driveMaxSpeed);
