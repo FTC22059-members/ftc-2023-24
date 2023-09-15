@@ -1,0 +1,16 @@
+From 1e506c64c1858367f7d102c9856a17a235924862 Mon Sep 17 00:00:00 2001
+From: elmonq <elmonq.git@gmail.com>
+Date: Thu, 14 Sep 2023 21:15:19 -0400
+Subject: Revert "Test commit from a temp. computer of Zach"
+
+This reverts commit 3dde7e94c1cd7a85a2588dc82af0e834fc563de7.
+
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/readme.md b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/readme.md
+index b31e4cb..4d1da42 100644
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/readme.md
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/readme.md
+@@ -1,4 +1,3 @@
+-
+ ## TeamCode Module
+ 
+ Welcome!
