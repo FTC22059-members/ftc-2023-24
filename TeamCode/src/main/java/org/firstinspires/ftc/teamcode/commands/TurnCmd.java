@@ -27,7 +27,15 @@ public class TurnCmd extends CommandBase {
     @Override
     public void initialize() {
         drivetrainSub.resetEncoders();
-        drivetrainSub.move(0, turnSpeed);
+        /*I don't care*/
+        if (turnAngle>=0) {
+            drivetrainSub.move(0, turnSpeed);
+        }else{
+            drivetrainSub.move(0, -turnSpeed);
+        }
+        if ((turnAngle == 0) && (turnSpeed == 0 )){
+            telemetry.addLine("Both turn angle and turn speed are 0!");
+        }
         imu.resetAngle();
     }
 
@@ -40,8 +48,14 @@ public class TurnCmd extends CommandBase {
     @Override
     public boolean isFinished() {
         System.out.println("IMU Angle: " + imu.getAngle());
-        System.out.println("Is done? "+ (Math.abs(imu.getAngle()) >= turnAngle));
-        return Math.abs(imu.getAngle()) >= turnAngle;
+        if (turnAngle>0) {
+            System.out.println("Is done? " + (imu.getAngle() >= turnAngle));
+            return imu.getAngle() >= turnAngle;
+        }else{
+            System.out.println("Is done? " + (imu.getAngle() <= turnAngle));
+            return imu.getAngle() <= turnAngle;
+        }
+
     }
 
 }
