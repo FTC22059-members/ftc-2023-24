@@ -58,7 +58,7 @@ public class DriveAprilTagCmd extends CommandBase
     double  turn            = 0;        // Desired turning power/speed (-1 to +1)
 
     // Adjust these numbers to suit your robot.
-    final double DESIRED_DISTANCE = 12.0; //  this is how close the camera should get to the target (inches)
+    final double DESIRED_DISTANCE = 8.0; //  this is how close the camera should get to the target (inches)
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
@@ -70,7 +70,7 @@ public class DriveAprilTagCmd extends CommandBase
     final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_STRAFE = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
-    private int desiredTagID = -1;     // Choose the tag you want to approach or set to -1 for ANY tag.
+    private int desiredTagID;     // Choose the tag you want to approach
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
@@ -111,8 +111,7 @@ public class DriveAprilTagCmd extends CommandBase
         // Step through the list of detected tags and look for a matching tag
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         for (AprilTagDetection detection : currentDetections) {
-            if ((detection.metadata != null)
-                    && ((desiredTagID >= 0) || (detection.id == desiredTagID))  ){
+            if ((detection.metadata != null) && (detection.id == desiredTagID)){
                 targetFound = true;
                 desiredTag = detection;
                 break;  // don't look any further.
@@ -146,7 +145,7 @@ public class DriveAprilTagCmd extends CommandBase
         }
         telemetry.update();
 
-        // Apply desired axes motions to the drivetrain.
+        // Apply desired axes motions to the drivetrain
         drivetrainSub.move(drive, turn, strafe);
         try {
             sleep(10);
@@ -154,6 +153,11 @@ public class DriveAprilTagCmd extends CommandBase
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public boolean isFinished() {
+        return targetFound&&drive+strafe<0.05;
     }
 
     /**
