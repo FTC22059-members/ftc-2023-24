@@ -5,6 +5,8 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
@@ -64,7 +66,12 @@ public class AutoRed1 extends CommandOpMode
                 ,drive3TileLength
                 ,new TurnCmd(-45,turnSpeed,drive,imu,telemetry)
                 ,driveHalfTileLength
+                ,new DriveAprilTagCmd(5,hardwareMap.get(WebcamName.class, "Webcam 1"),drive,telemetry)
                 ));
 
     }
+
+    /**public TurnCmd turn(int angle){
+        return new TurnCmd(angle,turnSpeed,drive,imu,telemetry);
+    }*/
 }

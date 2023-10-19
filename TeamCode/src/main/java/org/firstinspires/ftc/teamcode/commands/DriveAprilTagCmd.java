@@ -56,6 +56,9 @@ public class DriveAprilTagCmd extends CommandBase
     double  drive           = 0;        // Desired forward power/speed (-1 to +1)
     double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
     double  turn            = 0;        // Desired turning power/speed (-1 to +1)
+    double  rangeError      = 0;
+
+    int executeCount = 0;               //A really quickly put together timer
 
     // Adjust these numbers to suit your robot.
     final double DESIRED_DISTANCE = 8.0; //  this is how close the camera should get to the target (inches)
@@ -63,7 +66,7 @@ public class DriveAprilTagCmd extends CommandBase
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
     //  Drive = Error * Gain    Make these values smaller for smoother control, or larger for a more aggressive response.
-    final double SPEED_GAIN = 0.02;   //  Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
+    final double SPEED_GAIN = 0.07;   //  Forward Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
     final double STRAFE_GAIN = 0.015;   //  Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
     final double TURN_GAIN = 0.01;   //  Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
@@ -73,7 +76,7 @@ public class DriveAprilTagCmd extends CommandBase
     private int desiredTagID;     // Choose the tag you want to approach
     private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
-    private AprilTagDetection desiredTag = null;     // Used to hold the data for a detected AprilTag
+    private AprilTagDetection detectedTag = null;     // Used to hold the data for a detected AprilTag
 
     /**
      * Creates a new DriveAprilTagCmd.
@@ -105,36 +108,41 @@ public class DriveAprilTagCmd extends CommandBase
     @Override
     public void execute()
     {
+        executeCount++;
         targetFound = false;
-        desiredTag  = null;
+        detectedTag = null;
+
+
 
         // Step through the list of detected tags and look for a matching tag
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         for (AprilTagDetection detection : currentDetections) {
             if ((detection.metadata != null) && (detection.id == desiredTagID)){
                 targetFound = true;
-                desiredTag = detection;
+                detectedTag = detection;
                 break;  // don't look any further.
             }
         }
 
         // Tell the driver what we see, and what to do.
         if (targetFound) {
-            telemetry.addData("Target", "ID %d (%s)", desiredTag.id, desiredTag.metadata.name);
-            telemetry.addData("Range",  "%5.1f inches", desiredTag.ftcPose.range);
-            telemetry.addData("Bearing","%3.0f degrees", desiredTag.ftcPose.bearing);
-            telemetry.addData("Yaw","%3.0f degrees", desiredTag.ftcPose.yaw);
+            telemetry.addData("Target", "ID %d (%s)", detectedTag.id, detectedTag.metadata.name);
+            telemetry.addData("Range",  "%5.1f inches", detectedTag.ftcPose.range);
+            telemetry.addData("Bearing","%3.0f degrees", detectedTag.ftcPose.bearing);
+            telemetry.addData("Yaw","%3.0f degrees", detectedTag.ftcPose.yaw);
         } else {
             telemetry.addLine("Tag couldn't be found");
         }
+
+
 
         // If we have found the desired target, Drive to target Automatically .
         if (targetFound) {
 
             // Determine heading, range and Yaw (tag image rotation) error so we can use them to control the robot automatically.
-            double  rangeError      = (desiredTag.ftcPose.range - DESIRED_DISTANCE);
-            double  headingError    = desiredTag.ftcPose.bearing;
-            double  yawError        = desiredTag.ftcPose.yaw;
+            rangeError      = (detectedTag.ftcPose.range - DESIRED_DISTANCE);
+            double  headingError    = detectedTag.ftcPose.bearing;
+            double  yawError        = detectedTag.ftcPose.yaw;
 
             // Use the speed and turn "gains" to calculate how we want the robot to move.
             drive  = Range.clip(rangeError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
@@ -142,6 +150,11 @@ public class DriveAprilTagCmd extends CommandBase
             strafe = Range.clip(-yawError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
 
             telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+
+        }else{
+            drive = 0;
+            turn = 0;
+            strafe = 0;
         }
         telemetry.update();
 
@@ -152,12 +165,24 @@ public class DriveAprilTagCmd extends CommandBase
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
+        //System.out.println("Count: " + executeCount);
+        //System.out.println("Target Found?: " + targetFound);
+        //System.out.println("Range Error: " + rangeError);
+        //System.out.println("Drive: " + drive);
+        //System.out.println("Turn: " + turn);
+        //System.out.println("Strafe: " + strafe);
+        System.out.println(
+                "Data, "+executeCount +
+                ", "+targetFound+
+                ", "+rangeError+
+                ", "+drive+
+                ", "+turn+
+                ", "+strafe);
     }
 
     @Override
     public boolean isFinished() {
-        return targetFound&&drive+strafe<0.05;
+        return (executeCount>180)&&rangeError>4.7;
     }
 
     /**
