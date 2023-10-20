@@ -152,6 +152,7 @@ public class DriveAprilTagCmd extends CommandBase
             telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
 
         }else{
+            rangeError = 0;
             drive = 0;
             turn = 0;
             strafe = 0;
@@ -182,8 +183,15 @@ public class DriveAprilTagCmd extends CommandBase
 
     @Override
     public boolean isFinished() {
-        return (executeCount>180)&&rangeError>4.7;
+        return (executeCount>50)&&rangeError<1;
     }
+
+    @Override
+    public void end(boolean interrupted) {
+        visionPortal.close();
+        super.end(interrupted);
+    }
+
 
     /**
      * Initialize the AprilTag processor.
@@ -197,6 +205,7 @@ public class DriveAprilTagCmd extends CommandBase
                 .setCamera(webcamName)
                 .addProcessor(aprilTag)
                 .build();
+
     }
 
     /*
