@@ -32,7 +32,12 @@ public class DriveDistanceCmd extends CommandBase {
     public void initialize() {
         System.out.println("Drive Distance Initialized");
         drivetrainSub.resetEncoders();
-        drivetrainSub.move(driveSpeed, 0);
+        if (driveDistance > 0){
+            drivetrainSub.move(driveSpeed, 0);
+        }else{
+            drivetrainSub.move(-driveSpeed, 0);
+        }
+
     }
 
     @Override
@@ -46,8 +51,8 @@ public class DriveDistanceCmd extends CommandBase {
     @Override
     public boolean isFinished() {
         System.out.println("Encoder Distance: " + drivetrainSub.getFrontLeftEncoderDistance());
-        System.out.println("Is done? "+ (Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= driveDistance));
-        return Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= driveDistance;
+        System.out.println("Is done? "+ (Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= Math.abs(driveDistance)));
+        return Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= Math.abs(driveDistance);
     }
 
 }

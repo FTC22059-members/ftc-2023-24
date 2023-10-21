@@ -4,6 +4,8 @@ import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
@@ -12,22 +14,10 @@ import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 @Autonomous(name = "Autonomous Red 1 Side")
 public class AutoRed1Side extends CommandOpMode
 {
-    private DrivetrainSub drive;
-    private DriveDistanceCmd driveHalfTileLength;
-    private DriveDistanceCmd drive20;
-    private DriveDistanceCmd driveTileLength;
-    private DriveDistanceCmd drive3TileLength;
-
-    private TurnCmd turnCmd10CW;
-    private TurnCmd turnCmd75CW;
-    private TurnCmd turnCmd75CCW;
-    private TurnCmd turnCmd90CCW;
-    private TurnCmd turnCmd165CW;
-    private TurnCmd turnCmd180;
-
-    private double turnSpeed = 0.3;
+    private double turnSpeed = 0.4;
     private double driveSpeed = 0.5;
 
+    private DrivetrainSub drive;
     private ImuSub imu;
 
     private boolean fieldCentric = true;
@@ -38,35 +28,75 @@ public class AutoRed1Side extends CommandOpMode
         imu = new ImuSub(hardwareMap, telemetry);
 
 
-        //Setting up Cmds
-        driveHalfTileLength = new DriveDistanceCmd(12, driveSpeed, drive, telemetry);
-        drive20 = new DriveDistanceCmd(20, driveSpeed, drive, telemetry);
-        driveTileLength = new DriveDistanceCmd(24, driveSpeed, drive, telemetry);
-        drive3TileLength = new DriveDistanceCmd(72, driveSpeed, drive, telemetry);
-        turnCmd10CW = new TurnCmd(-10, turnSpeed, drive, imu, telemetry);
-        turnCmd75CW = new TurnCmd(-75, turnSpeed, drive, imu, telemetry);
-        turnCmd75CCW = new TurnCmd(75, turnSpeed, drive, imu, telemetry);
-        turnCmd90CCW = new TurnCmd(86, turnSpeed, drive, imu, telemetry);
-        turnCmd165CW = new TurnCmd(-165, turnSpeed, drive, imu, telemetry);
-        turnCmd180 = new TurnCmd(180, turnSpeed, drive, imu, telemetry);
+        //Find the position of team goal
+        String branch = "N";
 
+        while(branch == "N"){
+            if (gamepad1.x){
+                branch = "L";
+            }else if(gamepad1.y){
+                branch = "C";
+            }else if(gamepad1.b){
+                branch = "R";
+            }
+        }
 
         waitForStart();
-        schedule(new SequentialCommandGroup(
-                driveTileLength
-                , turnCmd75CCW
-                , turnCmd75CW
-                ,new DriveDistanceCmd(23, driveSpeed, drive, telemetry)
-                , turnCmd90CCW
-                ,new DriveDistanceCmd(16, driveSpeed, drive, telemetry)
-                ,turnCmd90CCW
-                ,new DriveDistanceCmd(50, driveSpeed, drive, telemetry)
-                ,turnCmd90CCW
-                ,new DriveDistanceCmd(96, driveSpeed, drive, telemetry)
-                //,new DriveDistanceCmd(96, driveSpeed, drive, telemetry)
-                //,new TurnCmd(-45,turnSpeed,drive,imu,telemetry)
-                //,driveHalfTileLength
-        ));
+        if (branch == "L") {
+            schedule(new SequentialCommandGroup(
+                    drive(24)
+                    , turnCCW(75)
+                    , turnCW(75)
+                    , drive(23)
+                    , turnCCW(85)
+                    , drive(18)
+                    , turnCCW(85)
+                    , drive(50)
+                    , turnCCW(81)
+                    , drive(65)
+                    , turnCCW(30)
+                    , drive(18)
+                    , new DriveAprilTagCmd(4, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+            ));
+        }else if (branch == "C") {
+            schedule(new SequentialCommandGroup(
+                    drive(24)
+                    , turnCCW(90)
+                    , new DriveAprilTagCmd(8, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , turnCCW(78)
+                    , drive(15)
+                    , turnCCW(83)
+                    , drive(60)
+                    , turnCCW(20)
+                    , drive(12)
+                    , new DriveAprilTagCmd(5, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+            ));
+        } else if (branch == "R") {
+            schedule(new SequentialCommandGroup(
+                    drive(24)
+                    , turnCW(75)
+                    , turnCCW(165)
+                    , new DriveAprilTagCmd(8, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , turnCCW(76)
+                    , drive(15)
+                    , turnCCW(83)
+                    , drive(60)
+                    , turnCCW(20)
+                    , drive(12)
+                    , new DriveAprilTagCmd(6, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+            ));
+        }
+    }
 
+    public TurnCmd turnCW(int angle){
+        return new TurnCmd(-angle,turnSpeed,drive,imu,telemetry);
+    }
 
-    }}
+    public TurnCmd turnCCW(int angle){
+        return new TurnCmd(angle,turnSpeed,drive,imu,telemetry);
+    }
+
+    public DriveDistanceCmd drive(int inches){
+        return new DriveDistanceCmd(inches, driveSpeed, drive, telemetry);
+    }
+}
