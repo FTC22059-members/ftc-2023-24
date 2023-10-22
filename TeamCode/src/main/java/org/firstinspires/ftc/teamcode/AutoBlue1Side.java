@@ -7,9 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
+import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
+import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 
 @Autonomous(name = "Autonomous Blue 1 Side")
 public class AutoBlue1Side extends CommandOpMode
@@ -19,6 +21,7 @@ public class AutoBlue1Side extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private PixelDropperSub pixelDropper;
 
     private boolean fieldCentric = true;
     @Override
@@ -26,7 +29,7 @@ public class AutoBlue1Side extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
-
+        pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
 
         //Find the position of team goal
         String branch = "N";
@@ -55,6 +58,8 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCW(20)
                     , drive(12)
                     , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , turnCCW(180)
+                    , new PixelDropperCmd(pixelDropper)
             ));
 
             //  ###  ##### #    # ##### #####
@@ -73,6 +78,8 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCW(20)
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , turnCCW(180)
+                    , new PixelDropperCmd(pixelDropper)
             ));
 
             // ###   #  ###  #   # #####
@@ -98,7 +105,8 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCW(25)
                     , drive(18)
                     , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
-
+                    , turnCCW(180)
+                    , new PixelDropperCmd(pixelDropper)
             ));
         }
     }

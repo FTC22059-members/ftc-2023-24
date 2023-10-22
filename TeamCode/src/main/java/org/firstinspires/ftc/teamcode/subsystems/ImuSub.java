@@ -11,8 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 public class ImuSub extends SubsystemBase {
-
-    private HardwareMap hardwareMap;
     private Telemetry telemetry;
 
     private IMU imu;
@@ -25,10 +23,9 @@ public class ImuSub extends SubsystemBase {
      * @param telemetryImport The telemetry to be used for printing things
      */
     public ImuSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
-        this.hardwareMap = hardwareMapImport;
         this.telemetry = telemetryImport;
 
-        imu = hardwareMap.get(IMU.class, "imu");
+        imu = hardwareMapImport.get(IMU.class, "imu");
 
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.LEFT;

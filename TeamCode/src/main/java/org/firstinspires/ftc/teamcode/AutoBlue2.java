@@ -8,8 +8,12 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
+import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
+import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
+
 
 @Autonomous(name = "Autonomous Blue 2")
 public class AutoBlue2 extends CommandOpMode
@@ -19,6 +23,7 @@ public class AutoBlue2 extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private IntakeSub intake;
 
     private boolean fieldCentric = true;
     @Override
@@ -26,7 +31,7 @@ public class AutoBlue2 extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
-
+        intake = new IntakeSub(hardwareMap, telemetry);
 
         //Find the position of team goal
         String branch = "N";
@@ -45,6 +50,7 @@ public class AutoBlue2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
+                    , new EjectCmd(intake)
                     , turnCW(75)
                     , drive(-18)
                     , turnCCW(75)
@@ -54,6 +60,7 @@ public class AutoBlue2 extends CommandOpMode
         }else if (branch == "C") {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , new EjectCmd(intake)
                     , turnCCW(85)
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
@@ -62,6 +69,7 @@ public class AutoBlue2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
+                    , new EjectCmd(intake)
                     , turnCCW(165)
                     , drive(12)
                     , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
@@ -80,4 +88,6 @@ public class AutoBlue2 extends CommandOpMode
     public DriveDistanceCmd drive(int inches){
         return new DriveDistanceCmd(inches, driveSpeed, drive, telemetry);
     }
+
+
 }

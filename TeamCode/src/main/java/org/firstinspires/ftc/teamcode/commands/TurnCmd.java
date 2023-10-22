@@ -47,12 +47,12 @@ public class TurnCmd extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        System.out.println("IMU Angle: " + imu.getAngle());
+        //System.out.println("IMU Angle: " + imu.getAngle());
         if (turnAngle>0) {
-            System.out.println("Is done? " + (imu.getAngle() >= turnAngle));
+            //System.out.println("Is done? " + (imu.getAngle() >= turnAngle));
             return imu.getAngle() >= turnAngle;
         }else{
-            System.out.println("Is done? " + (imu.getAngle() <= turnAngle));
+            //System.out.println("Is done? " + (imu.getAngle() <= turnAngle));
             return imu.getAngle() <= turnAngle;
         }
 
