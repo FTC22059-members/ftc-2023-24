@@ -56,32 +56,46 @@ public class AutoBlue1Side extends CommandOpMode
                     , drive(12)
                     , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
+
+            //  ###  ##### #    # ##### #####
+            // #     #     ##   #   #   #
+            // #     ##### # #  #
+
         }else if (branch == "C") {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCW(90)
+                    , turnCW(88)
                     , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
-                    , turnCW(78)
-                    , drive(15)
-                    , turnCW(83)
-                    , drive(60)
+                    , turnCW(90)
+                    , drive(18)
+                    , turnCW(91)
+                    , drive(66)
                     , turnCW(20)
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
+
+            // ###   #  ###  #   # #####
+            // #  #  # #     #   #   #
+            // ###   # #  ## #####   #
+            // #  #  # #   # #   #   #
+            // #  #  #  ###  #   #   #
+
         } else if (branch == "R") {
             schedule(new SequentialCommandGroup(
                     drive(24)
+
                     , turnCW(75)
-                    , turnCCW(75)
+                    , turnCCW(73)
+
                     , drive(23)
-                    , turnCW(85)
+                    , turnCW(88)
                     , drive(18)
-                    , turnCW(85)
-                    , drive(50)
-                    , turnCW(81)
+                    , turnCW(88)
+                    , drive(47)
+                    , turnCW(91)
                     , drive(65)
-                    , turnCW(30)
+                    , turnCW(25)
                     , drive(18)
                     , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
 

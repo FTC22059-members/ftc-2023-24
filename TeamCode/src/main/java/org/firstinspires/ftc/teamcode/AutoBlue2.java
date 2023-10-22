@@ -44,25 +44,25 @@ public class AutoBlue2 extends CommandOpMode
         if (branch == "L") {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCW(75)
                     , turnCCW(75)
+                    , turnCW(75)
                     , drive(-18)
-                    , turnCW(55)
+                    , turnCCW(75)
                     , drive(12)
                     , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
         }else if (branch == "C") {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCW(75)
+                    , turnCCW(85)
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
         } else if (branch == "R") {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCCW(75)
-                    , turnCW(145)
+                    , turnCW(75)
+                    , turnCCW(165)
                     , drive(12)
                     , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
