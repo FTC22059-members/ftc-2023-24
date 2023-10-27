@@ -10,6 +10,8 @@ import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
+import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 
 @Autonomous(name = "Autonomous Red 2")
 public class AutoRed2 extends CommandOpMode
@@ -19,6 +21,8 @@ public class AutoRed2 extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private IntakeSub intake;
+    private PixelDropperSub pixelDropper;
 
     private boolean fieldCentric = true;
     @Override
@@ -26,6 +30,8 @@ public class AutoRed2 extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
+        intake = new IntakeSub(hardwareMap, telemetry);
+        pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
 
 
         //Find the position of team goal

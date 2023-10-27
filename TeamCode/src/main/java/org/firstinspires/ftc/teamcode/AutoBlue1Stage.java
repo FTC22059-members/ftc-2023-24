@@ -7,9 +7,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
+import org.firstinspires.ftc.teamcode.commands.EjectCmd;
+import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
+import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
+import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 
 @Autonomous(name = "Autonomous Blue 1 Stage")
 public class AutoBlue1Stage extends CommandOpMode
@@ -19,6 +24,8 @@ public class AutoBlue1Stage extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private IntakeSub intake;
+    private PixelDropperSub pixelDropper;
 
     private boolean fieldCentric = true;
     @Override
@@ -26,6 +33,8 @@ public class AutoBlue1Stage extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
+        intake = new IntakeSub(hardwareMap, telemetry);
+        pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
 
 
         //Find the position of team goal
@@ -46,8 +55,10 @@ public class AutoBlue1Stage extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
+                    , new EjectCmd(intake)
                     , turnCW(165)
                     , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new IntakeCmd(intake)
                     , turnCCW(82)
                     , drive(30)
                     , turnCCW(85)
@@ -55,12 +66,17 @@ public class AutoBlue1Stage extends CommandOpMode
                     , turnCCW(35)
                     , drive(18)
                     , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new PixelDropperCmd(pixelDropper)
             ));
         }else if (branch == "C") {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , new EjectCmd(intake)
                     , turnCW(90)
                     , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new IntakeCmd(intake)
                     , turnCCW(82)
                     , drive(30)
                     , turnCCW(85)
@@ -68,19 +84,27 @@ public class AutoBlue1Stage extends CommandOpMode
                     , turnCCW(25)
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new PixelDropperCmd(pixelDropper)
             ));
         } else if (branch == "R") {schedule(new SequentialCommandGroup(
                 drive(24)
                 , turnCW(75)
+                , new EjectCmd(intake)
                 , turnCCW(70)
                 , drive(24)
                 , turnCW(90)
                 , drive(16)
+                , new IntakeCmd(intake)
                 , turnCW(180)
                 , drive(72)
                 , turnCCW(30)
                 , drive(12)
                 , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                , turnCW(180)
+                , new PixelDropperCmd(pixelDropper)
+                , new PixelDropperCmd(pixelDropper)
         ));
         }
 

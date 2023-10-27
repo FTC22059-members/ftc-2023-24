@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
+import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 
 
 @Autonomous(name = "Autonomous Blue 2")
@@ -24,6 +25,8 @@ public class AutoBlue2 extends CommandOpMode
     private DrivetrainSub drive;
     private ImuSub imu;
     private IntakeSub intake;
+    private PixelDropperSub pixelDropper;
+
 
     private boolean fieldCentric = true;
     @Override
@@ -32,6 +35,7 @@ public class AutoBlue2 extends CommandOpMode
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
+        pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
 
         //Find the position of team goal
         String branch = "N";

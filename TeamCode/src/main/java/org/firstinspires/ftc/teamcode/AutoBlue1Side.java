@@ -7,10 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
+import org.firstinspires.ftc.teamcode.commands.EjectCmd;
+import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 
 @Autonomous(name = "Autonomous Blue 1 Side")
@@ -21,6 +24,7 @@ public class AutoBlue1Side extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
     private boolean fieldCentric = true;
@@ -29,6 +33,7 @@ public class AutoBlue1Side extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
+        intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
 
         //Find the position of team goal
@@ -46,11 +51,20 @@ public class AutoBlue1Side extends CommandOpMode
 
         waitForStart();
         if (branch == "L") {
+
+            //  #     ##### ##### #####
+            //  #     #     #       #
+            //  #     ##### ####    #
+            //  #     #     #       #
+            //  ##### ##### #       #
+
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
+                    , new EjectCmd(intake)
                     , turnCW(165)
                     , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new IntakeCmd(intake)
                     , turnCW(88)
                     , drive(18)
                     , turnCW(91)
@@ -58,19 +72,24 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCW(20)
                     , drive(12)
                     , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
-                    , turnCCW(180)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
             ));
 
-            //  ###  ##### #    # ##### #####
-            // #     #     ##   #   #   #
-            // #     ##### # #  #
+            //   ###  ##### #    # ##### ##### ####
+            //  #     #     ##   #   #   #     #   #
+            //  #     ##### # #  #   #   ##### ####
+            //  #     #     #  # #   #   #     #   #
+            //   ###  ##### #   ##   #   ##### #   #
 
         }else if (branch == "C") {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , new EjectCmd(intake)
                     , turnCW(88)
                     , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new IntakeCmd(intake)
                     , turnCW(90)
                     , drive(18)
                     , turnCW(91)
@@ -78,26 +97,27 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCW(20)
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
-                    , turnCCW(180)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
             ));
 
-            // ###   #  ###  #   # #####
-            // #  #  # #     #   #   #
-            // ###   # #  ## #####   #
-            // #  #  # #   # #   #   #
-            // #  #  #  ###  #   #   #
+            //  ###   #  ###  #   # #####
+            //  #  #  # #     #   #   #
+            //  ###   # #  ## #####   #
+            //  #  #  # #   # #   #   #
+            //  #  #  #  ###  #   #   #
 
         } else if (branch == "R") {
             schedule(new SequentialCommandGroup(
                     drive(24)
-
                     , turnCW(75)
+                    , new EjectCmd(intake)
                     , turnCCW(73)
-
                     , drive(23)
                     , turnCW(88)
                     , drive(18)
+                    , new IntakeCmd(intake)
                     , turnCW(88)
                     , drive(47)
                     , turnCW(91)
@@ -105,7 +125,8 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCW(25)
                     , drive(18)
                     , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
-                    , turnCCW(180)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
             ));
         }
