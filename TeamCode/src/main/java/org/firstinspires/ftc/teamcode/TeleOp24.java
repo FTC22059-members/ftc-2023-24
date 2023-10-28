@@ -41,7 +41,8 @@ public class TeleOp24 extends CommandOpMode {
         register(drive);
         drive.setDefaultCommand(driveCmd);
 
-        telemetry.addData("Hello", "World");
+        telemetry.addData("Field Centric?", fieldCentric);
+        telemetry.update();
     }
 
     public boolean getFieldCentric(){

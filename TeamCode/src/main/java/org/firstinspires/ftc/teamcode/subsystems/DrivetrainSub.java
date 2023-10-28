@@ -34,9 +34,7 @@ public class DrivetrainSub extends SubsystemBase {
     public void periodic() {
         telemetry.addData("Drive", drive.toString());
     }
-    /* This may be a quick fix, I don't know
-        Returns Drive
-     */
+
     public MecanumDrive getDrive(){
         return drive;
     }

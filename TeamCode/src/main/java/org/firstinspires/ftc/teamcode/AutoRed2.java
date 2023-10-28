@@ -8,10 +8,12 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
+import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Red 2")
 public class AutoRed2 extends CommandOpMode
@@ -24,6 +26,10 @@ public class AutoRed2 extends CommandOpMode
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
+    private FirstVisionProcessor visionProcessor;
+    private VisionPortal visionPortal;
+
+
     private boolean fieldCentric = true;
     @Override
     public void initialize() {
@@ -32,22 +38,23 @@ public class AutoRed2 extends CommandOpMode
         imu = new ImuSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
-
+        visionProcessor = new FirstVisionProcessor();
+        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
 
         //Find the position of team goal
-        String branch = "N";
+        FirstVisionProcessor.Selected branch = FirstVisionProcessor.Selected.NONE;
 
-        while(branch == "N"){
-            if (gamepad1.x){
-                branch = "L";
-            }else if(gamepad1.y){
-                branch = "C";
-            }else if(gamepad1.b){
-                branch = "R";
-            }
+        while(opModeInInit()){
+            branch = visionProcessor.getSelection();
+            telemetry.addData("Branch = ", branch.toString());
+            telemetry.update();
         }
+
         waitForStart();
-        if (branch == "L") {
+
+        visionPortal.close();
+
+        if (branch == FirstVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
@@ -55,14 +62,14 @@ public class AutoRed2 extends CommandOpMode
                     , drive(12)
                     , new DriveAprilTagCmd(4, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
-        }else if (branch == "C") {
+        }else if (branch == FirstVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
                     , drive(12)
                     , new DriveAprilTagCmd(5, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
-        } else if (branch == "R") {
+        } else if (branch == FirstVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)

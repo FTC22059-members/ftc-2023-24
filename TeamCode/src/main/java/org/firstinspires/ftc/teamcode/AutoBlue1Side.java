@@ -11,10 +11,12 @@ import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
+import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
+import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Blue 1 Side")
 public class AutoBlue1Side extends CommandOpMode
@@ -27,6 +29,10 @@ public class AutoBlue1Side extends CommandOpMode
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
+    private FirstVisionProcessor visionProcessor;
+    private VisionPortal visionPortal;
+
+
     private boolean fieldCentric = true;
     @Override
     public void initialize() {
@@ -35,22 +41,20 @@ public class AutoBlue1Side extends CommandOpMode
         imu = new ImuSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        visionProcessor = new FirstVisionProcessor();
+        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
 
         //Find the position of team goal
-        String branch = "N";
+        FirstVisionProcessor.Selected branch = FirstVisionProcessor.Selected.NONE;
 
-        while(branch == "N"){
-            if (gamepad1.x){
-                branch = "L";
-            }else if(gamepad1.y){
-                branch = "C";
-            }else if(gamepad1.b){
-                branch = "R";
-            }
+        while(opModeInInit()){
+            branch = visionProcessor.getSelection();
+            telemetry.addData("Branch = ", branch.toString());
+            telemetry.update();
         }
 
         waitForStart();
-        if (branch == "L") {
+        if (branch == FirstVisionProcessor.Selected.LEFT) {
 
             //  #     ##### ##### #####
             //  #     #     #       #
@@ -83,7 +87,7 @@ public class AutoBlue1Side extends CommandOpMode
             //  #     #     #  # #   #   #     #   #
             //   ###  ##### #   ##   #   ##### #   #
 
-        }else if (branch == "C") {
+        }else if (branch == FirstVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , new EjectCmd(intake)
@@ -108,7 +112,7 @@ public class AutoBlue1Side extends CommandOpMode
             //  #  #  # #   # #   #   #
             //  #  #  #  ###  #   #   #
 
-        } else if (branch == "R") {
+        } else if (branch == FirstVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
