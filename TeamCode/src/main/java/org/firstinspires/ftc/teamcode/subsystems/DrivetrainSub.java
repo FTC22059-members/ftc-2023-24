@@ -31,9 +31,7 @@ public class DrivetrainSub extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {
-        telemetry.addData("Drive", drive.toString());
-    }
+    public void periodic() {}
 
     public MecanumDrive getDrive(){
         return drive;
@@ -44,7 +42,7 @@ public class DrivetrainSub extends SubsystemBase {
     }
 
     public void move(double forward, double rotation, double strafe){
-        drive.driveRobotCentric(strafe, forward, rotation);
+        drive.driveRobotCentric(-strafe, -forward, rotation);
     }
 
     public void setMaxSpeed(double maxSpeed){

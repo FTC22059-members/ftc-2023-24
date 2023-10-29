@@ -41,18 +41,18 @@ public class DriveCmd extends CommandBase {
         if (fieldCentric.getAsBoolean()) {
             // optional fifth parameter for squared inputs
             drivetrainSub.getDrive().driveFieldCentric(
-                    gamepad.getLeftX()*brakeMultiplier,
-                    gamepad.getLeftY()*brakeMultiplier,
-                    gamepad.getRightX()*brakeMultiplier,
+                    gamepad.getLeftX()*-brakeMultiplier,
+                    gamepad.getLeftY()*-brakeMultiplier,
+                    gamepad.getRightX()*-brakeMultiplier,
                     angleDegrees.getAsDouble(),   // gyro value passed in here must be in degrees
                     false
-            ); ;
+            );
         } else {
             // optional fourth parameter for squared inputs
             drivetrainSub.getDrive().driveRobotCentric(
-                    gamepad.getLeftX()*brakeMultiplier,
-                    gamepad.getLeftY()*brakeMultiplier,
-                    gamepad.getRightX()*brakeMultiplier,
+                    gamepad.getLeftX()*-brakeMultiplier,
+                    gamepad.getLeftY()*-brakeMultiplier,
+                    gamepad.getRightX()*-brakeMultiplier,
                     false
             );
         }
