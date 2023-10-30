@@ -57,8 +57,6 @@ public class ImuSub extends SubsystemBase {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         lastYaw = orientation.getYaw(AngleUnit.DEGREES);
         globalAngle = 0.0;
-
-        telemetry.addLine("IMU angle reset");
     }
 
     /**

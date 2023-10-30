@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.commands.DriveCmd;
 import org.firstinspires.ftc.teamcode.commands.PlaneLaunchCmd;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
-import org.firstinspires.ftc.teamcode.PlaneLauncherTest;
 
 
 @TeleOp(name = "Tele-op 2023-24")
@@ -42,9 +41,9 @@ public class TeleOp24 extends CommandOpMode {
         super.run();
 
         driverOp.getGamepadButton(GamepadKeys.Button.Y)
-                .whenPressed(new InstantCommand(this::toggleFieldCentric));
+                .whenPressed(new InstantCommand(() -> {fieldCentric=true; robotImu.resetAngle();}));
         driverOp.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(planeLaunchCmd);
+                .whenPressed(new InstantCommand(() -> fieldCentric=false));
 
         telemetry.addData("Field Centric?", fieldCentric);
         telemetry.update();
@@ -52,12 +51,5 @@ public class TeleOp24 extends CommandOpMode {
 
     public boolean getFieldCentric(){
         return fieldCentric;
-    }
-
-    public void toggleFieldCentric(){
-        fieldCentric = !fieldCentric;
-        if (fieldCentric){
-            robotImu.resetAngle();
-        }
     }
 }
