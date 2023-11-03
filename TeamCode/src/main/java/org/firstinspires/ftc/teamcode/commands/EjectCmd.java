@@ -10,7 +10,7 @@ import java.util.function.DoubleSupplier;
 public class EjectCmd extends CommandBase {
 
     private final IntakeSub intakeSub;
-    double speed = Constants.IntakeConstants.defaultIntakeSpeed;
+    double speed;
 
     public EjectCmd(IntakeSub is, double speed){
         this.intakeSub = is;
@@ -19,13 +19,12 @@ public class EjectCmd extends CommandBase {
     }
 
     public EjectCmd(IntakeSub is){
-        this.intakeSub = is;
+        this(is, Constants.IntakeConstants.defaultIntakeSpeed);
     }
 
     @Override
-    public void initialize(){
+    public void execute(){
         this.intakeSub.intake(-1*this.speed);
-        System.out.println("Eject CMD");
     }
 
     @Override

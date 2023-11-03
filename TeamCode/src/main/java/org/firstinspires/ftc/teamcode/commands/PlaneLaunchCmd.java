@@ -19,13 +19,13 @@ public class PlaneLaunchCmd extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        planeLauncherSub.setLauncherPosition(true);
+    public void execute() {
+        planeLauncherSub.launch();
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return true;
     }
 
 }

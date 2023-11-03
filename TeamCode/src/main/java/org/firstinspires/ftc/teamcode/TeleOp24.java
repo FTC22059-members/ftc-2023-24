@@ -34,6 +34,8 @@ public class TeleOp24 extends CommandOpMode {
 
         driverOp.getGamepadButton(GamepadKeys.Button.Y)
                 .whenPressed(new InstantCommand(this::toggleFieldCentric));
+        driverOp.getGamepadButton(GamepadKeys.Button.X)
+                .whenPressed(planeLaunchCmd);
 
         register(drive);
         drive.setDefaultCommand(driveCmd);

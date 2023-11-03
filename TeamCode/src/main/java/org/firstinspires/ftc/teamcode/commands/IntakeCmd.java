@@ -10,7 +10,7 @@ import java.util.function.DoubleSupplier;
 public class IntakeCmd extends CommandBase {
 
     private final IntakeSub intakeSub;
-    double speed = Constants.IntakeConstants.defaultIntakeSpeed;
+    double speed;
 
     public IntakeCmd(IntakeSub is, double speed){
         this.intakeSub = is;
@@ -19,10 +19,11 @@ public class IntakeCmd extends CommandBase {
     }
 
     public IntakeCmd(IntakeSub is){
-        this.intakeSub = is;
+        this(is, Constants.IntakeConstants.defaultIntakeSpeed);
     }
+
     @Override
-    public void initialize(){
+    public void execute(){
         this.intakeSub.intake(this.speed);
     }
 

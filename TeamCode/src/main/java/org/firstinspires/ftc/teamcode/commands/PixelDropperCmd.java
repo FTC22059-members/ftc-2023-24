@@ -14,10 +14,10 @@ public class PixelDropperCmd extends CommandBase {
         this.pixelDropperSub = pds;
         addRequirements(pds);
     }
+
     @Override
-    public void initialize(){
+    public void execute(){
         this.pixelDropperSub.dropPixel();
-        System.out.println("PIXEL DROPPER CMD");
     }
 
     @Override
