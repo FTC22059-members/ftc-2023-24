@@ -32,6 +32,9 @@ public class TeleOp24 extends CommandOpMode {
         driveCmd = new DriveCmd(drive, driverOp, robotImu::getAngle, this::getFieldCentric);
         planeLaunchCmd = new PlaneLaunchCmd(hardwareMap, telemetry);
 
+        driverOp.getGamepadButton(GamepadKeys.Button.Y)
+                .whenPressed(new InstantCommand(this::toggleFieldCentric));
+
         register(drive);
         drive.setDefaultCommand(driveCmd);
     }
@@ -40,16 +43,17 @@ public class TeleOp24 extends CommandOpMode {
     public void run(){
         super.run();
 
-        driverOp.getGamepadButton(GamepadKeys.Button.Y)
-                .whenPressed(new InstantCommand(() -> {fieldCentric=true; robotImu.resetAngle();}));
-        driverOp.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(new InstantCommand(() -> fieldCentric=false));
-
         telemetry.addData("Field Centric?", fieldCentric);
         telemetry.update();
     }
 
     public boolean getFieldCentric(){
         return fieldCentric;
+    }
+    public void toggleFieldCentric(){
+        fieldCentric = !fieldCentric;
+        if (fieldCentric){
+            robotImu.resetAngle();
+        }
     }
 }
