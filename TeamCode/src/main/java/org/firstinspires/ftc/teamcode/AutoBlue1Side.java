@@ -11,11 +11,12 @@ import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
-import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
+import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Blue 1 Side")
@@ -26,26 +27,28 @@ public class AutoBlue1Side extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private WebcamSub webcam;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
-    private FirstVisionProcessor visionProcessor;
+    private TeamPropVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
 
     private boolean fieldCentric = true;
     @Override
     public void initialize() {
-        //Initalizing Hardware
+        //Initializing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
+        webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
-        visionProcessor = new FirstVisionProcessor();
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
+        visionProcessor = new TeamPropVisionProcessor();
+        visionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), visionProcessor);
 
         //Find the position of team goal
-        FirstVisionProcessor.Selected branch = FirstVisionProcessor.Selected.NONE;
+        TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
 
         while(opModeInInit()){
             branch = visionProcessor.getSelection();
@@ -54,7 +57,7 @@ public class AutoBlue1Side extends CommandOpMode
         }
 
         waitForStart();
-        if (branch == FirstVisionProcessor.Selected.LEFT) {
+        if (branch == TeamPropVisionProcessor.Selected.LEFT) {
 
             //  #     ##### ##### #####
             //  #     #     #       #
@@ -67,7 +70,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , turnCCW(75)
                     , new EjectCmd(intake)
                     , turnCW(165)
-                    , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(10, webcam.getWebcamName(), drive, telemetry)
                     , new IntakeCmd(intake)
                     , turnCW(88)
                     , drive(18)
@@ -75,7 +78,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , drive(60)
                     , turnCW(20)
                     , drive(12)
-                    , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(1, webcam.getWebcamName(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -87,12 +90,12 @@ public class AutoBlue1Side extends CommandOpMode
             //  #     #     #  # #   #   #     #   #
             //   ###  ##### #   ##   #   ##### #   #
 
-        }else if (branch == FirstVisionProcessor.Selected.MIDDLE) {
+        }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , new EjectCmd(intake)
                     , turnCW(88)
-                    , new DriveAprilTagCmd(10, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(10, webcam.getWebcamName(), drive, telemetry)
                     , new IntakeCmd(intake)
                     , turnCW(90)
                     , drive(18)
@@ -100,7 +103,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , drive(66)
                     , turnCW(20)
                     , drive(12)
-                    , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(2, webcam.getWebcamName(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -112,7 +115,7 @@ public class AutoBlue1Side extends CommandOpMode
             //  #  #  # #   # #   #   #
             //  #  #  #  ###  #   #   #
 
-        } else if (branch == FirstVisionProcessor.Selected.RIGHT) {
+        } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
@@ -128,7 +131,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , drive(65)
                     , turnCW(25)
                     , drive(18)
-                    , new DriveAprilTagCmd(3, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(3, webcam.getWebcamName(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)

@@ -27,6 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+
+
 package org.firstinspires.ftc.teamcode.commands;
 
 import static java.lang.Thread.sleep;
@@ -45,6 +47,11 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+/**
+ * This class is dedicated to driving towards April Tags.
+ * It is based off of code from the FIRST default programs.
+ */
 
 public class DriveAprilTagCmd extends CommandBase
 {
@@ -166,12 +173,6 @@ public class DriveAprilTagCmd extends CommandBase
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        //System.out.println("Count: " + executeCount);
-        //System.out.println("Target Found?: " + targetFound);
-        //System.out.println("Range Error: " + rangeError);
-        //System.out.println("Drive: " + drive);
-        //System.out.println("Turn: " + turn);
-        //System.out.println("Strafe: " + strafe);
         System.out.println(
                 "Data, "+executeCount +
                 ", "+targetFound+

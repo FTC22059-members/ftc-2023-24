@@ -5,6 +5,10 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 
+/**
+ * This command is dedicated to driving forwards/backwards a certain amount of distance and speed
+ */
+
 public class DriveDistanceCmd extends CommandBase {
 
     private final DrivetrainSub drivetrainSub;
@@ -13,13 +17,14 @@ public class DriveDistanceCmd extends CommandBase {
     private Telemetry telemetry;
 
     /**
-     * Creates a new DriveDistance.
+     * Drives the robot forward/backwards for a certain distance and speed.
      *
      * @param dd The number of inches the robot will drive
      * @param ds  The speed at which the robot will drive
      * @param dts  The drive subsystem on which this command will run
      * @param tm Telemetry input
      */
+
     public DriveDistanceCmd(double dd, double ds, DrivetrainSub dts, Telemetry tm) {
         driveDistance = dd;
         driveSpeed = ds;

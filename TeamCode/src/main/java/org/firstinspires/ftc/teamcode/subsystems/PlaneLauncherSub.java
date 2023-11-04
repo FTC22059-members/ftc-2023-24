@@ -36,6 +36,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 
+/**
+ * This subsystem is dedicated to interfacing with the PlaneLauncher.
+ * It is mainly used for launching,
+ * but it can also reset the plane launcher.
+ */
+
 public class PlaneLauncherSub extends SubsystemBase {
 
 
@@ -44,8 +50,15 @@ public class PlaneLauncherSub extends SubsystemBase {
     // Define class members
     Servo   servo;
 
-    public PlaneLauncherSub(HardwareMap hardwareMap, Telemetry telemetryImport){
-        this.telemetry = telemetryImport;
+    /**
+     * This initiallizes the plane launcher subsystem, importing the hardware map and telemetry
+     *
+     * @param hardwareMap The hardware map to be imported
+     * @param telemetry The telemetry to be imported
+     */
+
+    public PlaneLauncherSub(HardwareMap hardwareMap, Telemetry telemetry){
+        this.telemetry = telemetry;
         servo = hardwareMap.get(Servo.class, "planeLauncher");
 
         this.reset();

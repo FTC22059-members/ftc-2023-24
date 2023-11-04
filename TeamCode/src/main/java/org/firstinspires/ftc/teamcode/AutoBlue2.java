@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
-import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Blue 2")
@@ -26,7 +26,7 @@ public class AutoBlue2 extends CommandOpMode
     private ImuSub imu;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
-    private FirstVisionProcessor visionProcessor;
+    private TeamPropVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
 
@@ -38,11 +38,11 @@ public class AutoBlue2 extends CommandOpMode
         imu = new ImuSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
-        visionProcessor = new FirstVisionProcessor();
+        visionProcessor = new TeamPropVisionProcessor();
         visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
 
         //Find the position of team goal
-        FirstVisionProcessor.Selected branch = FirstVisionProcessor.Selected.NONE;
+        TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
 
         while(opModeInInit()){
             branch = visionProcessor.getSelection();
@@ -54,7 +54,7 @@ public class AutoBlue2 extends CommandOpMode
 
         visionPortal.close();
 
-        if (branch == FirstVisionProcessor.Selected.LEFT) {
+        if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
@@ -65,7 +65,7 @@ public class AutoBlue2 extends CommandOpMode
                     , drive(12)
                     , new DriveAprilTagCmd(1, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
-        }else if (branch == FirstVisionProcessor.Selected.MIDDLE) {
+        }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , new EjectCmd(intake)
@@ -73,7 +73,7 @@ public class AutoBlue2 extends CommandOpMode
                     , drive(12)
                     , new DriveAprilTagCmd(2, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
             ));
-        } else if (branch == FirstVisionProcessor.Selected.RIGHT) {
+        } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)

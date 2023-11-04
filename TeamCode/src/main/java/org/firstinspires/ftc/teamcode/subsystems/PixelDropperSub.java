@@ -6,6 +6,11 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+/**
+ * This subsystem is dedicated to interfacing with the depositor.
+ * It can only drop the pixel.
+ */
+
 public class PixelDropperSub extends SubsystemBase {
 
 
@@ -31,7 +36,11 @@ public class PixelDropperSub extends SubsystemBase {
         //telemetry.addData("IMU heading", globalAngle);
     }
 
+    /**
+     * The code to drop the pixel.
+     */
     public void dropPixel(){
         telemetry.addLine("Pixel dropper called. ");
     }
+
 }

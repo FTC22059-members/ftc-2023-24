@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
-import org.firstinspires.ftc.teamcode.processors.FirstVisionProcessor;
+import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Red 1 Stage")
@@ -28,7 +28,7 @@ public class AutoRed1Stage extends CommandOpMode
     private ImuSub imu;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
-    private FirstVisionProcessor visionProcessor;
+    private TeamPropVisionProcessor visionProcessor;
     private VisionPortal visionPortal;
 
     private boolean fieldCentric = true;
@@ -39,12 +39,12 @@ public class AutoRed1Stage extends CommandOpMode
         imu = new ImuSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
-        visionProcessor = new FirstVisionProcessor();
+        visionProcessor = new TeamPropVisionProcessor();
         visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
 
 
         //Find the position of team goal
-        FirstVisionProcessor.Selected branch = FirstVisionProcessor.Selected.NONE;
+        TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
 
         while(opModeInInit()){
             branch = visionProcessor.getSelection();
@@ -57,7 +57,7 @@ public class AutoRed1Stage extends CommandOpMode
         //visionPortal.stopStreaming();
         visionPortal.close();
 
-        if (branch == FirstVisionProcessor.Selected.LEFT) {
+        if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
@@ -76,7 +76,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
             ));
-        }else if (branch == FirstVisionProcessor.Selected.MIDDLE) {
+        }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , new EjectCmd(intake)
@@ -94,7 +94,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
             ));
-        } else if (branch == FirstVisionProcessor.Selected.RIGHT) {
+        } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)

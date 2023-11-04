@@ -6,6 +6,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 
+/**
+ * This command is dedicated to turning with a certain angle
+ */
+
 public class TurnCmd extends CommandBase {
 
     private final DrivetrainSub drivetrainSub;
@@ -13,6 +17,16 @@ public class TurnCmd extends CommandBase {
     private final double turnSpeed;
     private Telemetry telemetry;
     private ImuSub imu;
+
+    /**
+     * Turns at a certain angle and speed importing the IMU and telemetry.
+     *
+     * @param p_turnAngle
+     * @param p_turnSpeed
+     * @param p_drivetrainSub
+     * @param p_imu
+     * @param p_telemetry
+     */
 
     public TurnCmd(double p_turnAngle, double p_turnSpeed, DrivetrainSub p_drivetrainSub, ImuSub p_imu, Telemetry p_telemetry) {
         turnAngle = p_turnAngle;
@@ -27,7 +41,7 @@ public class TurnCmd extends CommandBase {
     @Override
     public void initialize() {
         drivetrainSub.resetEncoders();
-        /*I don't care*/
+
         if (turnAngle>=0) {
             drivetrainSub.move(0, turnSpeed);
         }else{

@@ -12,6 +12,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Constants;
 
+/**
+ * This subsystem is dedicated to interfacing with the Intake
+ * It can only turn on the intake
+ */
+
 public class IntakeSub extends SubsystemBase {
 
 
@@ -37,6 +42,11 @@ public class IntakeSub extends SubsystemBase {
         //telemetry.addData("IMU heading", globalAngle);
     }
 
+    /**
+     * Turns on the intake, with a speed.
+     *
+     * @param speed The speed that the intake goes.
+     */
     public void intake(double speed){
         telemetry.addData("Intake called with speed of ", speed);
     }

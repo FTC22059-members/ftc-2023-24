@@ -16,7 +16,11 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
-public class FirstVisionProcessor implements VisionProcessor {
+/**
+ * The
+ */
+
+public class TeamPropVisionProcessor implements VisionProcessor {
     public Rect rectLeft = new Rect(10, 330, 200, 150);
     public Rect rectMiddle = new Rect(220, 280, 200, 150);
     public Rect rectRight = new Rect(430, 330, 200, 150);

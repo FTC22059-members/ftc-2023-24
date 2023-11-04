@@ -10,6 +10,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
+/**
+ * This subsystem is dedicated to interfacing with the Imu.
+ * It's main purpose is for returning the angle that the imu reads,
+ * but it can also reset the angle
+ */
+
+
 public class ImuSub extends SubsystemBase {
     private Telemetry telemetry;
 
@@ -22,6 +29,7 @@ public class ImuSub extends SubsystemBase {
      * @param hardwareMapImport The hardware map to be used in imu
      * @param telemetryImport The telemetry to be used for printing things
      */
+
     public ImuSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
         this.telemetry = telemetryImport;
 
@@ -90,6 +98,7 @@ public class ImuSub extends SubsystemBase {
      * Gets a degree angle value and converts it to radians
      * @return Final converted angle
      */
+
     public double getAngleRadians() {
         return (Math.PI * this.getAngle()) / 180;
     }
@@ -98,6 +107,7 @@ public class ImuSub extends SubsystemBase {
      * Gets the correction based on where the robot is told to go versus where it is.
      * @return The amount that the robot needs to be corrected by
      */
+
     public double checkDirection() {
         // The gain value determines how sensitive the correction is to direction changes.
         // You will have to experiment with your robot to get small smooth direction changes
