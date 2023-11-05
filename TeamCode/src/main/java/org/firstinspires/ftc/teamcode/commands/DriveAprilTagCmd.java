@@ -37,16 +37,12 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
-import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.VisionProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class is dedicated to driving towards April Tags.
@@ -57,7 +53,6 @@ public class DriveAprilTagCmd extends CommandBase
 {
     private DrivetrainSub drivetrainSub;
     private Telemetry telemetry;
-    private WebcamName webcamName;
 
     boolean targetFound     = false;    // Set to true when an AprilTag target is detected
     double  drive           = 0;        // Desired forward power/speed (-1 to +1)
@@ -81,7 +76,6 @@ public class DriveAprilTagCmd extends CommandBase
     final double MAX_AUTO_STRAFE = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
     final double MAX_AUTO_TURN = 0.3;   //  Clip the turn speed to this max value (adjust for your robot)
     private int desiredTagID;     // Choose the tag you want to approach
-    private VisionPortal visionPortal;               // Used to manage the video source.
     private AprilTagProcessor aprilTag;              // Used for managing the AprilTag detection process.
     private AprilTagDetection detectedTag = null;     // Used to hold the data for a detected AprilTag
 
@@ -89,27 +83,19 @@ public class DriveAprilTagCmd extends CommandBase
      * Creates a new DriveAprilTagCmd.
      *
      * @param dt Desired Tag
-     * @param wcn Webcam Name
+     * @param visionProcessor April Tag Processor
      * @param dts  The drive subsystem on which this command will run
      * @param tm Telemetry input
      */
-    public DriveAprilTagCmd(int dt, WebcamName wcn, DrivetrainSub dts, Telemetry tm) {
+    public DriveAprilTagCmd(int dt, VisionProcessor visionProcessor, DrivetrainSub dts, Telemetry tm) {
         desiredTagID = dt;
-        webcamName = wcn;
+        aprilTag = (AprilTagProcessor) visionProcessor;
         drivetrainSub = dts;
         telemetry = tm;
     }
 
     @Override
     public void initialize(){
-        // Initialize the Apriltag Detection process
-        initAprilTag();
-
-        try {
-            setManualExposure(6, 250);  // Use low exposure time to reduce motion blur
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -118,8 +104,6 @@ public class DriveAprilTagCmd extends CommandBase
         executeCount++;
         targetFound = false;
         detectedTag = null;
-
-
 
         // Step through the list of detected tags and look for a matching tag
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -140,8 +124,6 @@ public class DriveAprilTagCmd extends CommandBase
         } else {
             telemetry.addLine("Tag couldn't be found");
         }
-
-
 
         // If we have found the desired target, Drive to target Automatically .
         if (targetFound) {
@@ -189,59 +171,6 @@ public class DriveAprilTagCmd extends CommandBase
 
     @Override
     public void end(boolean interrupted) {
-        visionPortal.close();
         super.end(interrupted);
-    }
-
-
-    /**
-     * Initialize the AprilTag processor.
-     */
-    private void initAprilTag() {
-        // Create the AprilTag processor by using a builder.
-        aprilTag = new AprilTagProcessor.Builder().build();
-
-        // Create the vision portal by using a builder.
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(webcamName)
-                .addProcessor(aprilTag)
-                .build();
-
-    }
-
-    /*
-     Manually set the camera gain and exposure.
-     This can only be called AFTER calling initAprilTag(), and only works for Webcams;
-    */
-    private void setManualExposure(int exposureMS, int gain) throws InterruptedException {
-        // Wait for the camera to be open, then use the controls
-
-        if (visionPortal == null) {
-            return;
-        }
-
-        // Make sure camera is streaming before we try to set the exposure controls
-        if (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-            telemetry.addData("Camera", "Waiting");
-            telemetry.update();
-            while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-                sleep(20);
-            }
-            telemetry.addData("Camera", "Ready");
-            telemetry.update();
-        }
-
-        // Set camera controls
-        ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
-        if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
-            exposureControl.setMode(ExposureControl.Mode.Manual);
-            sleep(50);
-        }
-        exposureControl.setExposure((long)exposureMS, TimeUnit.MILLISECONDS);
-        sleep(20);
-        GainControl gainControl = visionPortal.getCameraControl(GainControl.class);
-        gainControl.setGain(gain);
-        sleep(20);
-
     }
 }

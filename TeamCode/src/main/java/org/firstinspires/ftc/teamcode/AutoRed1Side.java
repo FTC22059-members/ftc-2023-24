@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
@@ -31,34 +31,38 @@ public class AutoRed1Side extends CommandOpMode
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
-    private TeamPropVisionProcessor visionProcessor;
-    private VisionPortal visionPortal;
+    private TeamPropVisionProcessor teamPropVisionProcessor;
+    private VisionPortal teamPropVisionPortal;
 
 
     private boolean fieldCentric = true;
     @Override
     public void initialize() {
-        //Initalizing Hardware
+        //Initializing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
-        visionProcessor = new TeamPropVisionProcessor();
-        visionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), visionProcessor);
+        teamPropVisionProcessor = new TeamPropVisionProcessor();
+        teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
 
         //Find the position of team goal
         TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
 
         while(opModeInInit()){
-            branch = visionProcessor.getSelection();
+            branch = teamPropVisionProcessor.getSelection();
             telemetry.addData("Branch = ", branch.toString());
             telemetry.update();
         }
 
+        teamPropVisionPortal.close();
+
         waitForStart();
 
-        visionPortal.close();
+        //Set up vision processor
+        AprilTagVisionPortal aprilTagVisionPortal = new AprilTagVisionPortal(webcam.getWebcamName(), telemetry);
+        aprilTagVisionPortal.initialize();
 
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
@@ -76,17 +80,18 @@ public class AutoRed1Side extends CommandOpMode
                     , drive(65)
                     , turnCCW(30)
                     , drive(18)
-                    , new DriveAprilTagCmd(4, webcam.getWebcamName(), drive, telemetry)
+                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
+                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
             ));
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , new EjectCmd(intake)
                     , turnCCW(90)
-                    , new DriveAprilTagCmd(8, webcam.getWebcamName(), drive, telemetry)
+                    , new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new IntakeCmd(intake)
                     , turnCCW(78)
                     , drive(15)
@@ -94,10 +99,11 @@ public class AutoRed1Side extends CommandOpMode
                     , drive(60)
                     , turnCCW(20)
                     , drive(12)
-                    , new DriveAprilTagCmd(5, webcam.getWebcamName(), drive, telemetry)
+                    , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
+                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
             ));
         } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
@@ -105,7 +111,7 @@ public class AutoRed1Side extends CommandOpMode
                     , turnCW(75)
                     , new EjectCmd(intake)
                     , turnCCW(165)
-                    , new DriveAprilTagCmd(8, webcam.getWebcamName(), drive, telemetry)
+                    , new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new IntakeCmd(intake)
                     , turnCCW(76)
                     , drive(15)
@@ -113,7 +119,11 @@ public class AutoRed1Side extends CommandOpMode
                     , drive(60)
                     , turnCCW(20)
                     , drive(12)
-                    , new DriveAprilTagCmd(6, webcam.getWebcamName(), drive, telemetry)
+                    , new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
             ));
         }
     }
