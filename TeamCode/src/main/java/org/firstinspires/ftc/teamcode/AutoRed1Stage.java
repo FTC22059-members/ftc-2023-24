@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Red 1 Stage")
@@ -26,6 +27,7 @@ public class AutoRed1Stage extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private WebcamSub webcam;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
     private TeamPropVisionProcessor visionProcessor;
@@ -37,10 +39,11 @@ public class AutoRed1Stage extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
+        webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
         visionProcessor = new TeamPropVisionProcessor();
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
+        visionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), visionProcessor);
 
 
         //Find the position of team goal
@@ -71,7 +74,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , drive(72)
                     , turnCW(45)
                     , drive(12)
-                    , new DriveAprilTagCmd(4, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(4, webcam.getWebcamName(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -81,7 +84,7 @@ public class AutoRed1Stage extends CommandOpMode
                     drive(24)
                     , new EjectCmd(intake)
                     , turnCCW(90)
-                    , new DriveAprilTagCmd(8, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(8, webcam.getWebcamName(), drive, telemetry)
                     , new IntakeCmd(intake)
                     , turnCW(90)
                     , drive(30)
@@ -89,7 +92,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , drive(72)
                     , turnCW(25)
                     , drive(12)
-                    , new DriveAprilTagCmd(5, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(5, webcam.getWebcamName(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -100,7 +103,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , turnCW(75)
                     , new EjectCmd(intake)
                     , turnCCW(165)
-                    , new DriveAprilTagCmd(8, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(8, webcam.getWebcamName(), drive, telemetry)
                     , new IntakeCmd(intake)
                     , turnCW(97)
                     , drive(30)
@@ -108,7 +111,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , drive(72)
                     , turnCW(25)
                     , drive(12)
-                    , new DriveAprilTagCmd(6, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(6, webcam.getWebcamName(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)

@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
+import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
 
 @Autonomous(name = "Autonomous Red 2")
@@ -23,6 +24,7 @@ public class AutoRed2 extends CommandOpMode
 
     private DrivetrainSub drive;
     private ImuSub imu;
+    private WebcamSub webcam;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
@@ -36,10 +38,11 @@ public class AutoRed2 extends CommandOpMode
         //Initalizing Hardware
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
+        webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
         visionProcessor = new TeamPropVisionProcessor();
-        visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), visionProcessor);
+        visionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), visionProcessor);
 
         //Find the position of team goal
         TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
@@ -60,14 +63,14 @@ public class AutoRed2 extends CommandOpMode
                     , turnCCW(75)
                     , turnCW(145)
                     , drive(12)
-                    , new DriveAprilTagCmd(4, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(4, webcam.getWebcamName(), drive, telemetry)
             ));
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
                     , drive(12)
-                    , new DriveAprilTagCmd(5, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(5, webcam.getWebcamName(), drive, telemetry)
             ));
         } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
@@ -77,7 +80,7 @@ public class AutoRed2 extends CommandOpMode
                     , drive(-18)
                     , turnCW(55)
                     , drive(12)
-                    , new DriveAprilTagCmd(6, hardwareMap.get(WebcamName.class, "Webcam 1"), drive, telemetry)
+                    , new DriveAprilTagCmd(6, webcam.getWebcamName(), drive, telemetry)
             ));
         }
     }
