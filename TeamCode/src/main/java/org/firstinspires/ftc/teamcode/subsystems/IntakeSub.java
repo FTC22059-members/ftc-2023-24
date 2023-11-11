@@ -25,11 +25,11 @@ public class IntakeSub extends SubsystemBase {
     private Motor intake;
     /**
      * Constructor for the imu
-     * @param hardwareMapImport The hardware map to be used in imu
-     * @param telemetryImport The telemetry to be used for printing things
+     * @param hardwareMapParam The hardware map to be used in imu
+     * @param telemetryParam The telemetry to be used for printing things
      */
-    public IntakeSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
-        this.telemetry = telemetryImport;
+    public IntakeSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.telemetry = telemetryParam;
 
         //this.intake = new Motor(hardwareMapImport, "intake", Motor.GoBILDA.RPM_312);
     }

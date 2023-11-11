@@ -19,18 +19,18 @@ public class DriveDistanceCmd extends CommandBase {
     /**
      * Drives the robot forward/backwards for a certain distance and speed.
      *
-     * @param dd The number of inches the robot will drive
-     * @param ds  The speed at which the robot will drive
-     * @param dts  The drive subsystem on which this command will run
-     * @param tm Telemetry input
+     * @param driveDistanceParam The number of inches the robot will drive
+     * @param driveSpeedParam  The speed at which the robot will drive
+     * @param drivetrainSubParam  The drive subsystem on which this command will run
+     * @param telemetryParam Telemetry input
      */
 
-    public DriveDistanceCmd(double dd, double ds, DrivetrainSub dts, Telemetry tm) {
-        driveDistance = dd;
-        driveSpeed = ds;
-        drivetrainSub = dts;
-        telemetry = tm;
-        addRequirements(dts);
+    public DriveDistanceCmd(double driveDistanceParam, double driveSpeedParam, DrivetrainSub drivetrainSubParam, Telemetry telemetryParam) {
+        driveDistance = driveDistanceParam;
+        driveSpeed = driveSpeedParam;
+        this.drivetrainSub = drivetrainSubParam;
+        this.telemetry = telemetryParam;
+        addRequirements(drivetrainSubParam);
     }
 
     @Override

@@ -19,25 +19,25 @@ public class IntakeCmd extends CommandBase {
     /**
      * Intake pixel at a certain speed
      *
-     * @param is Intake sub to import
-     * @param speed Speed to eject at
+     * @param intakeSubParam Intake sub to import
+     * @param speedParam Speed to eject at
      */
 
 
-    public IntakeCmd(IntakeSub is, double speed){
-        this.intakeSub = is;
-        this.speed = speed;
-        addRequirements(is);
+    public IntakeCmd(IntakeSub intakeSubParam, double speedParam){
+        this.intakeSub = intakeSubParam;
+        this.speed = speedParam;
+        addRequirements(intakeSubParam);
     }
 
     /**
      * Intake pixel at the default speed. This is an override function
      *
-     * @param is Intake sub to import
+     * @param intakeSubParam Intake sub to import
      */
 
-    public IntakeCmd(IntakeSub is){
-        this(is, Constants.IntakeConstants.defaultIntakeSpeed);
+    public IntakeCmd(IntakeSub intakeSubParam){
+        this(intakeSubParam, Constants.IntakeConstants.defaultIntakeSpeed);
     }
 
     @Override

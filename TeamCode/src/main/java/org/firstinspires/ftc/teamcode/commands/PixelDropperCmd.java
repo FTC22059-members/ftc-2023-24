@@ -17,12 +17,12 @@ public class PixelDropperCmd extends CommandBase {
     /**
      * Command to drop the pixel
      *
-     * @param pds
+     * @param pixelDropperSubParam The pixel dropper sub to be imported
      */
 
-    public PixelDropperCmd(PixelDropperSub pds){
-        this.pixelDropperSub = pds;
-        addRequirements(pds);
+    public PixelDropperCmd(PixelDropperSub pixelDropperSubParam){
+        this.pixelDropperSub = pixelDropperSubParam;
+        addRequirements(pixelDropperSubParam);
     }
 
     @Override

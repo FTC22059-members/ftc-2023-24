@@ -28,19 +28,20 @@ public class DrivetrainSub extends SubsystemBase {
     /***
      * Creates a new DriveTrain Sub constructor
      *
-     * @param hardwareMap
-     * @param tm
+     * @param hardwareMapParam
+     * @param telemetryParam
      */
 
-    public DrivetrainSub(HardwareMap hardwareMap, Telemetry tm) {
-        this.frontLeft = new Motor(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
-        this.frontRight = new Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312);
-        this.backLeft = new Motor(hardwareMap, "backLeft", Motor.GoBILDA.RPM_312);
-        this.backRight = new Motor(hardwareMap, "backRight", Motor.GoBILDA.RPM_312);
+    public DrivetrainSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.frontLeft = new Motor(hardwareMapParam, "frontLeft", Motor.GoBILDA.RPM_312);
+        this.frontRight = new Motor(hardwareMapParam, "frontRight", Motor.GoBILDA.RPM_312);
+        this.backLeft = new Motor(hardwareMapParam, "backLeft", Motor.GoBILDA.RPM_312);
+        this.backRight = new Motor(hardwareMapParam, "backRight", Motor.GoBILDA.RPM_312);
 
         this.drive = new MecanumDrive(this.frontLeft, this.frontRight, this.backLeft, this.backRight);
         this.drive.setMaxSpeed(DriveConstants.driveMaxSpeed);
-        this.telemetry = tm;
+
+        this.telemetry = telemetryParam;
     }
 
     @Override

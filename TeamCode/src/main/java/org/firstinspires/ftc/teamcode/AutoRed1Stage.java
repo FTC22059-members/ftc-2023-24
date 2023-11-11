@@ -125,12 +125,12 @@ public class AutoRed1Stage extends CommandOpMode
         }
     }
 
-    public TurnCmd turnCW(int angle){
-        return new TurnCmd(-angle,turnSpeed,drive,imu,telemetry);
+    public TurnCmd turnCW(int angleParam){
+        return new TurnCmd(-angleParam,turnSpeed,drive,imu,telemetry);
     }
 
-    public TurnCmd turnCCW(int angle){
-        return new TurnCmd(angle,turnSpeed,drive,imu,telemetry);
+    public TurnCmd turnCCW(int angleParam){
+        return new TurnCmd(angleParam,turnSpeed,drive,imu,telemetry);
     }
 
     public DriveDistanceCmd drive(int inches){

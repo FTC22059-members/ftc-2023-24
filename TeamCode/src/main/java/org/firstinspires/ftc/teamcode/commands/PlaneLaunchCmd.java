@@ -20,13 +20,13 @@ public class PlaneLaunchCmd extends CommandBase {
     /**
      * Plane launch command.
      *
-     * @param hardwareMap
-     * @param telemetryImport
+     * @param hardwareMapParam
+     * @param telemetryParam
      */
 
-    public PlaneLaunchCmd(HardwareMap hardwareMap,Telemetry telemetryImport) {
-        planeLauncherSub = new PlaneLauncherSub(hardwareMap,telemetry);
-        telemetry = telemetryImport;
+    public PlaneLaunchCmd(HardwareMap hardwareMapParam,Telemetry telemetryParam) {
+        planeLauncherSub = new PlaneLauncherSub(hardwareMapParam,telemetry);
+        telemetry = telemetryParam;
     }
 
     @Override

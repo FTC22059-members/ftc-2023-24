@@ -19,13 +19,13 @@ public class PixelDropperSub extends SubsystemBase {
     private Motor pixelDropper;
     /**
      * Constructor for the imu
-     * @param hardwareMapImport The hardware map to be used in imu
-     * @param telemetryImport The telemetry to be used for printing things
+     * @param hardwareMapParam The hardware map to be used in imu
+     * @param telemetryParam The telemetry to be used for printing things
      */
-    public PixelDropperSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
-        this.telemetry = telemetryImport;
+    public PixelDropperSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.telemetry = telemetryParam;
 
-        //this.pixelDropper = new Motor(hardwareMapImport, "Pixel Dropper", Motor.GoBILDA.RPM_312);
+        //this.pixelDropper = new Motor(hardwareMapParam, "Pixel Dropper", Motor.GoBILDA.RPM_312);
     }
 
     /**

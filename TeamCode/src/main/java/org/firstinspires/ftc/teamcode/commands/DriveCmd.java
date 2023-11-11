@@ -18,23 +18,23 @@ public class DriveCmd extends CommandBase {
     private final DrivetrainSub drivetrainSub;
     private final GamepadEx gamepad;
     private final DoubleSupplier angleDegrees;
-    private final BooleanSupplier fieldCentric;
+    private final BooleanSupplier fieldCentricity;
 
     /**
      * This command deals with the driving in teleop.
      *
-     * @param dts The drivetrain sub to be imported
-     * @param gp1 The main gamepad to be imported
-     * @param ad The angle returned by the IMU, implemented by a double supplier because this is run in init, and we need this value to be updated constantly
-     * @param fc Whether we're field centric or not. This is a supplier for the same reason that ad is.
+     * @param drivetrainSubParam The drivetrain sub to be imported
+     * @param gamepad1Param The main gamepad to be imported
+     * @param angleParam The angle returned by the IMU, implemented by a double supplier because this is run in init, and we need this value to be updated constantly
+     * @param fieldCentricityParam Whether we're field centric or not. This is a supplier for the same reason that angleParam is.
      */
 
-    public DriveCmd(DrivetrainSub dts, GamepadEx gp1, DoubleSupplier ad, BooleanSupplier fc){
-        drivetrainSub = dts;
-        gamepad = gp1;
-        angleDegrees = ad;
-        fieldCentric = fc;
-        addRequirements(drivetrainSub);
+    public DriveCmd(DrivetrainSub drivetrainSubParam, GamepadEx gamepad1Param, DoubleSupplier angleParam, BooleanSupplier fieldCentricityParam){
+        this.drivetrainSub = drivetrainSubParam;
+        gamepad = gamepad1Param;
+        angleDegrees = angleParam;
+        fieldCentricity = fieldCentricityParam;
+        addRequirements(this.drivetrainSub);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DriveCmd extends CommandBase {
             //telemetry.addData("Precise Mode", "On");
         }
 
-        if (fieldCentric.getAsBoolean()) {
+        if (fieldCentricity.getAsBoolean()) {
             // optional fifth parameter for squared inputs
             drivetrainSub.getDrive().driveFieldCentric(
                     gamepad.getLeftX()*-brakeMultiplier,

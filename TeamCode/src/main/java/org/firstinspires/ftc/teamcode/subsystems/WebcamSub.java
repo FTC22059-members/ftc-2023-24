@@ -19,13 +19,13 @@ public class WebcamSub extends SubsystemBase {
     private WebcamName webcam;
     /**
      * Constructor for the webcam
-     * @param hardwareMapImport The hardware map to be used in webcam
-     * @param telemetryImport The telemetry to be used for printing things
+     * @param hardwareMapParam The hardware map to be used in webcam
+     * @param telemetryParam The telemetry to be used for printing things
      */
-    public WebcamSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
-        this.telemetry = telemetryImport;
+    public WebcamSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.telemetry = telemetryParam;
 
-        this.webcam = hardwareMapImport.get(WebcamName.class, "Webcam 1");
+        this.webcam = hardwareMapParam.get(WebcamName.class, "Webcam 1");
     }
 
     public WebcamName getWebcamName(){

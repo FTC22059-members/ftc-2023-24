@@ -21,21 +21,21 @@ public class TurnCmd extends CommandBase {
     /**
      * Turns at a certain angle and speed importing the IMU and telemetry.
      *
-     * @param p_turnAngle
-     * @param p_turnSpeed
-     * @param p_drivetrainSub
-     * @param p_imu
-     * @param p_telemetry
+     * @param turnAngleParam
+     * @param turnSpeedParam
+     * @param drivetrainSubParam
+     * @param imuParam
+     * @param telemetryParam
      */
 
-    public TurnCmd(double p_turnAngle, double p_turnSpeed, DrivetrainSub p_drivetrainSub, ImuSub p_imu, Telemetry p_telemetry) {
-        turnAngle = p_turnAngle;
-        turnSpeed = p_turnSpeed;
-        drivetrainSub = p_drivetrainSub;
-        imu = p_imu;
-        telemetry = p_telemetry;
+    public TurnCmd(double turnAngleParam, double turnSpeedParam, DrivetrainSub drivetrainSubParam, ImuSub imuParam, Telemetry telemetryParam) {
+        turnAngle = turnAngleParam;
+        turnSpeed = turnSpeedParam;
+        drivetrainSub = drivetrainSubParam;
+        imu = imuParam;
+        telemetry = telemetryParam;
 
-        addRequirements(p_drivetrainSub);
+        addRequirements(drivetrainSubParam);
     }
 
     @Override

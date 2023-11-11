@@ -26,17 +26,17 @@ public class ImuSub extends SubsystemBase {
 
     /**
      * Constructor for the imu
-     * @param hardwareMapImport The hardware map to be used in imu
-     * @param telemetryImport The telemetry to be used for printing things
+     * @param hardwareMapParam The hardware map to be used in imu
+     * @param telemetryParam The telemetry to be used for printing things
      */
 
-    public ImuSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
-        this.telemetry = telemetryImport;
+    public ImuSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.telemetry = telemetryParam;
 
-        imu = hardwareMapImport.get(IMU.class, "imu");
+        imu = hardwareMapParam.get(IMU.class, "imu");
 
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 

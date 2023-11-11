@@ -53,13 +53,13 @@ public class PlaneLauncherSub extends SubsystemBase {
     /**
      * This initiallizes the plane launcher subsystem, importing the hardware map and telemetry
      *
-     * @param hardwareMap The hardware map to be imported
-     * @param telemetry The telemetry to be imported
+     * @param hardwareMapParam The hardware map to be imported
+     * @param telemetryParam The telemetry to be imported
      */
 
-    public PlaneLauncherSub(HardwareMap hardwareMap, Telemetry telemetry){
-        this.telemetry = telemetry;
-        servo = hardwareMap.get(Servo.class, "planeLauncher");
+    public PlaneLauncherSub(HardwareMap hardwareMapParam, Telemetry telemetryParam){
+        this.telemetry = telemetryParam;
+        servo = hardwareMapParam.get(Servo.class, "planeLauncher");
 
         this.reset();
     }

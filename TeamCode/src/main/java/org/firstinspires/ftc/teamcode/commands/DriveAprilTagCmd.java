@@ -82,16 +82,16 @@ public class DriveAprilTagCmd extends CommandBase
     /**
      * Creates a new DriveAprilTagCmd.
      *
-     * @param dt Desired Tag
-     * @param visionProcessor April Tag Processor
-     * @param dts  The drive subsystem on which this command will run
-     * @param tm Telemetry input
+     * @param desiredTagIDImport Desired Tag
+     * @param visionProcessorImport April Tag Processor
+     * @param drivetrainSubImport  The drive subsystem on which this command will run
+     * @param telemetryImport Telemetry
      */
-    public DriveAprilTagCmd(int dt, VisionProcessor visionProcessor, DrivetrainSub dts, Telemetry tm) {
-        desiredTagID = dt;
-        aprilTag = (AprilTagProcessor) visionProcessor;
-        drivetrainSub = dts;
-        telemetry = tm;
+    public DriveAprilTagCmd(int desiredTagIDImport, VisionProcessor visionProcessorImport, DrivetrainSub drivetrainSubImport, Telemetry telemetryImport) {
+        desiredTagID = desiredTagIDImport;
+        aprilTag = (AprilTagProcessor) visionProcessorImport;
+        drivetrainSub = drivetrainSubImport;
+        telemetry = telemetryImport;
     }
 
     @Override
