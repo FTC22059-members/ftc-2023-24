@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -22,16 +24,15 @@ public class IntakeSub extends SubsystemBase {
 
     private Telemetry telemetry;
 
-    private Motor intake;
+    private CRServo intake;
     /**
      * Constructor for the imu
-     * @param hardwareMapParam The hardware map to be used in imu
-     * @param telemetryParam The telemetry to be used for printing things
+     * @param hardwareMapImport The hardware map to be used in imu
+     * @param telemetryImport The telemetry to be used for printing things
      */
-    public IntakeSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
-        this.telemetry = telemetryParam;
-
-        //this.intake = new Motor(hardwareMapImport, "intake", Motor.GoBILDA.RPM_312);
+    public IntakeSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
+        this.telemetry = telemetryImport;
+        this.intake = hardwareMapImport.get(CRServo.class, "intakeServo");
     }
 
     /**
@@ -47,7 +48,8 @@ public class IntakeSub extends SubsystemBase {
      *
      * @param speed The speed that the intake goes.
      */
-    public void intake(double speed){
+    public void setSpeed(double speed) {
         telemetry.addData("Intake called with speed of ", speed);
+        intake.setPower(speed);
     }
 }

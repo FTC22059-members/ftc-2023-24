@@ -41,7 +41,7 @@ public class EjectCmd extends CommandBase {
 
     @Override
     public void execute(){
-        this.intakeSub.intake(-1*this.speed);
+        this.intakeSub.setSpeed(-1*this.speed);
     }
 
     @Override
