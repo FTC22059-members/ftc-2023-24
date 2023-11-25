@@ -8,7 +8,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants{
-        public static final double defaultIntakeSpeed = 0.6;
+        public static final double defaultIntakeSpeed = 1.0;
     }
 
     public static final class DroneConstants{
