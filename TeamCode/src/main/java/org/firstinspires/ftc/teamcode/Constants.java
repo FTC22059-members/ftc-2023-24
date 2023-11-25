@@ -11,6 +11,10 @@ public final class Constants {
         public static final double defaultIntakeSpeed = 1.0;
     }
 
+    public static final class ArmConstants{
+        public static final double defaultArmSpeed = 0.5;
+    }
+
     public static final class DroneConstants{
         public static final double launchPosition = 0.3;
         public static final double resetPosition = 0;
