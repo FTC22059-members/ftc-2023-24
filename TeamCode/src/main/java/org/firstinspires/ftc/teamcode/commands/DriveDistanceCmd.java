@@ -5,6 +5,10 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 
+/**
+ * This command is dedicated to driving forwards/backwards a certain amount of distance and speed
+ */
+
 public class DriveDistanceCmd extends CommandBase {
 
     private final DrivetrainSub drivetrainSub;
@@ -13,26 +17,32 @@ public class DriveDistanceCmd extends CommandBase {
     private Telemetry telemetry;
 
     /**
-     * Creates a new DriveDistance.
+     * Drives the robot forward/backwards for a certain distance and speed.
      *
-     * @param dd The number of inches the robot will drive
-     * @param ds  The speed at which the robot will drive
-     * @param dts  The drive subsystem on which this command will run
-     * @param tm Telemetry input
+     * @param driveDistanceParam The number of inches the robot will drive
+     * @param driveSpeedParam  The speed at which the robot will drive
+     * @param drivetrainSubParam  The drive subsystem on which this command will run
+     * @param telemetryParam Telemetry input
      */
-    public DriveDistanceCmd(double dd, double ds, DrivetrainSub dts, Telemetry tm) {
-        driveDistance = dd;
-        driveSpeed = ds;
-        drivetrainSub = dts;
-        telemetry = tm;
-        addRequirements(dts);
+
+    public DriveDistanceCmd(double driveDistanceParam, double driveSpeedParam, DrivetrainSub drivetrainSubParam, Telemetry telemetryParam) {
+        driveDistance = driveDistanceParam;
+        driveSpeed = driveSpeedParam;
+        this.drivetrainSub = drivetrainSubParam;
+        this.telemetry = telemetryParam;
+        addRequirements(drivetrainSubParam);
     }
 
     @Override
     public void initialize() {
         System.out.println("Drive Distance Initialized");
         drivetrainSub.resetEncoders();
-        drivetrainSub.move(driveSpeed, 0);
+        if (driveDistance > 0){
+            drivetrainSub.move(driveSpeed, 0);
+        }else{
+            drivetrainSub.move(-driveSpeed, 0);
+        }
+
     }
 
     @Override
@@ -46,8 +56,8 @@ public class DriveDistanceCmd extends CommandBase {
     @Override
     public boolean isFinished() {
         System.out.println("Encoder Distance: " + drivetrainSub.getFrontLeftEncoderDistance());
-        System.out.println("Is done? "+ (Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= driveDistance));
-        return Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= driveDistance;
+        System.out.println("Is done? "+ (Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= Math.abs(driveDistance)));
+        return Math.abs(drivetrainSub.getFrontLeftEncoderDistance()) >= Math.abs(driveDistance);
     }
 
 }

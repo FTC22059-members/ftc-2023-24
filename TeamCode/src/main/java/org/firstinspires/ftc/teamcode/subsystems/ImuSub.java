@@ -10,9 +10,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-public class ImuSub extends SubsystemBase {
+/**
+ * This subsystem is dedicated to interfacing with the Imu.
+ * It's main purpose is for returning the angle that the imu reads,
+ * but it can also reset the angle
+ */
 
-    private HardwareMap hardwareMap;
+
+public class ImuSub extends SubsystemBase {
     private Telemetry telemetry;
 
     private IMU imu;
@@ -21,17 +26,17 @@ public class ImuSub extends SubsystemBase {
 
     /**
      * Constructor for the imu
-     * @param hardwareMapImport The hardware map to be used in imu
-     * @param telemetryImport The telemetry to be used for printing things
+     * @param hardwareMapParam The hardware map to be used in imu
+     * @param telemetryParam The telemetry to be used for printing things
      */
-    public ImuSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
-        this.hardwareMap = hardwareMapImport;
-        this.telemetry = telemetryImport;
 
-        imu = hardwareMap.get(IMU.class, "imu");
+    public ImuSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.telemetry = telemetryParam;
 
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
-        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.LEFT;
+        imu = hardwareMapParam.get(IMU.class, "imu");
+
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
@@ -60,8 +65,6 @@ public class ImuSub extends SubsystemBase {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         lastYaw = orientation.getYaw(AngleUnit.DEGREES);
         globalAngle = 0.0;
-
-        telemetry.addLine("IMU angle reset");
     }
 
     /**
@@ -95,6 +98,7 @@ public class ImuSub extends SubsystemBase {
      * Gets a degree angle value and converts it to radians
      * @return Final converted angle
      */
+
     public double getAngleRadians() {
         return (Math.PI * this.getAngle()) / 180;
     }
@@ -103,6 +107,7 @@ public class ImuSub extends SubsystemBase {
      * Gets the correction based on where the robot is told to go versus where it is.
      * @return The amount that the robot needs to be corrected by
      */
+
     public double checkDirection() {
         // The gain value determines how sensitive the correction is to direction changes.
         // You will have to experiment with your robot to get small smooth direction changes

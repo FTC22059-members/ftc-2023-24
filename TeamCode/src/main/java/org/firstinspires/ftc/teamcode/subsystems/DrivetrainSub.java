@@ -8,6 +8,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants.DriveConstants;
 
+/**
+ * This subsystem is dedicated to interfacing with the drivetrain.
+ * It's main purpose is to make the drivetrain move,
+ * but it can also return distances and the drivetrain
+ */
+
 public class DrivetrainSub extends SubsystemBase {
 
     Telemetry telemetry;
@@ -19,39 +25,64 @@ public class DrivetrainSub extends SubsystemBase {
 
     MecanumDrive drive;
 
-    public DrivetrainSub(HardwareMap hardwareMap, Telemetry tm) {
-        this.frontLeft = new Motor(hardwareMap, "frontLeft", Motor.GoBILDA.RPM_312);
-        this.frontRight = new Motor(hardwareMap, "frontRight", Motor.GoBILDA.RPM_312);
-        this.backLeft = new Motor(hardwareMap, "backLeft", Motor.GoBILDA.RPM_312);
-        this.backRight = new Motor(hardwareMap, "backRight", Motor.GoBILDA.RPM_312);
+    /***
+     * Creates a new DriveTrain Sub constructor
+     *
+     * @param hardwareMapParam
+     * @param telemetryParam
+     */
+
+    public DrivetrainSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
+        this.frontLeft = new Motor(hardwareMapParam, "frontLeft", Motor.GoBILDA.RPM_312);
+        this.frontRight = new Motor(hardwareMapParam, "frontRight", Motor.GoBILDA.RPM_312);
+        this.backLeft = new Motor(hardwareMapParam, "backLeft", Motor.GoBILDA.RPM_312);
+        this.backRight = new Motor(hardwareMapParam, "backRight", Motor.GoBILDA.RPM_312);
 
         this.drive = new MecanumDrive(this.frontLeft, this.frontRight, this.backLeft, this.backRight);
         this.drive.setMaxSpeed(DriveConstants.driveMaxSpeed);
-        this.telemetry = tm;
+
+        this.telemetry = telemetryParam;
     }
 
     @Override
-    public void periodic() {
-        telemetry.addData("Drive", drive.toString());
-    }
-    /* This may be a quick fix, I don't know
-        Returns Drive
+    public void periodic() {}
+
+    /**
+     *
+     * @return returns the mecanumDrive of the Drivetrain
      */
     public MecanumDrive getDrive(){
         return drive;
+    }
+
+    /**
+     * Moves the robot with a robot centric viewpoint
+     *
+     * @param forward Forward value inputted to drive
+     * @param rotation Rotational value inputted to drive
+     * @param strafe Strafe value inputted to drive
+     */
+    public void move(double forward, double rotation, double strafe){
+        drive.driveRobotCentric(-strafe, -forward, rotation);
     }
 
     public void move(double forward, double rotation){
         this.move(forward, rotation, 0);
     }
 
-    public void move(double forward, double rotation, double strafe){
-        drive.driveRobotCentric(strafe, forward, rotation);
-    }
+    /**
+     * Sets the maxiumum speed for the drivetrain
+     *
+     * @param maxSpeed The maxium speed for the drivetrain
+     */
 
     public void setMaxSpeed(double maxSpeed){
         this.drive.setMaxSpeed(maxSpeed);
     }
+
+    /**
+     * Resets the encoders.
+     */
 
     public void resetEncoders(){
         frontLeft.resetEncoder();
@@ -59,6 +90,12 @@ public class DrivetrainSub extends SubsystemBase {
         backLeft.resetEncoder();
         backRight.resetEncoder();
     }
+
+    /**
+     * Gets the Front Left Encoder distance. Used for tracking distance driven
+     *
+     * @return The revolutions driven
+     */
 
     public double getFrontLeftEncoderDistance() {
         telemetry.addData("Revs",frontLeft.encoder.getRevolutions());
