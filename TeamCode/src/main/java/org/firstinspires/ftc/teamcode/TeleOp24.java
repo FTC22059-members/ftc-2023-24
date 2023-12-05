@@ -7,12 +7,18 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.commands.ArmCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
+import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.PlaneLaunchCmd;
+import org.firstinspires.ftc.teamcode.commands.WristCmd;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
+import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
+import org.firstinspires.ftc.teamcode.subsystems.WristSub;
 
 
 @TeleOp(name = "Tele-op 2023-24")
@@ -29,6 +35,13 @@ public class TeleOp24 extends CommandOpMode {
     private IntakeCmd intakeOn;
     private IntakeCmd intakeReverse;
     private IntakeCmd intakeOff;
+    private ArmSub arm;
+    private PixelDropperSub output;
+    private PixelDropperCmd outputOn;
+    private PixelDropperCmd outputOff;
+    private WristSub wrist;
+    private WristCmd wristUp;
+    private WristCmd wristDown;
     @Override
     public void initialize(){
         robotImu = new ImuSub(hardwareMap, telemetry);
@@ -42,23 +55,40 @@ public class TeleOp24 extends CommandOpMode {
         intakeOn = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed);
         intakeReverse = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed*-1);
         intakeOff = new IntakeCmd(intake,0);
+        arm = new ArmSub(hardwareMap, telemetry);
+        output = new PixelDropperSub(hardwareMap, telemetry);
+        outputOn = new PixelDropperCmd(output, Constants.PixelDropperConstants.defaultPixelDropperSpeed);
+        outputOff = new PixelDropperCmd(output, 0);
+        wrist = new WristSub(hardwareMap, telemetry);
+        wristUp = new WristCmd(wrist, 1);
+        wristDown = new WristCmd(wrist, Constants.WristConstants.defaultWristAngle);
 
         // Y: Toggle field centric
         driverOp.getGamepadButton(GamepadKeys.Button.Y)
                 .whenPressed(new InstantCommand(this::toggleFieldCentric));
 
         // X: Launch plane
-        driverOp.getGamepadButton(GamepadKeys.Button.X)
+        toolOp.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(planeLaunchCmd);
 
         // Intake
         // A (hold): Take in pixel
         // B (hold): Spit out pixel
-        driverOp.getGamepadButton(GamepadKeys.Button.A).whenPressed(intakeOn);
-        driverOp.getGamepadButton(GamepadKeys.Button.A).whenReleased(intakeOff);
+        toolOp.getGamepadButton(GamepadKeys.Button.A).whenPressed(intakeOn);
+        toolOp.getGamepadButton(GamepadKeys.Button.A).whenReleased(intakeOff);
 
-        driverOp.getGamepadButton(GamepadKeys.Button.B).whenPressed(intakeReverse);
-        driverOp.getGamepadButton(GamepadKeys.Button.B).whenReleased(intakeOff);
+        toolOp.getGamepadButton(GamepadKeys.Button.B).whenPressed(intakeReverse);
+        toolOp.getGamepadButton(GamepadKeys.Button.B).whenReleased(intakeOff);
+
+        // Output
+        // Y (hold): Output pixel
+        toolOp.getGamepadButton(GamepadKeys.Button.Y).whenPressed(outputOn);
+        toolOp.getGamepadButton(GamepadKeys.Button.Y).whenReleased(outputOff);
+
+        // Wrist
+        // D-Pad (up/down): Move wrist
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(wristUp);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(wristDown);
 
         register(drive);
         drive.setDefaultCommand(driveCmd);
@@ -67,6 +97,11 @@ public class TeleOp24 extends CommandOpMode {
     @Override
     public void run(){
         super.run();
+        telemetry.addLine("This is a new op mode");
+
+        // Intake Arm
+        // Left Joystick (up/down): Move arm
+        arm.setSpeed(toolOp.getLeftY());
 
         telemetry.addData("Field Centric?", fieldCentric);
         telemetry.update();

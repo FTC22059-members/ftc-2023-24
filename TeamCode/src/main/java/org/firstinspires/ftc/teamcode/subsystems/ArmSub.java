@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Constants;
 
 /**
  * This subsystem is dedicated to interfacing with the Intake
@@ -43,6 +43,6 @@ public class ArmSub extends SubsystemBase {
      */
     public void setSpeed(double speed) {
         telemetry.addData("Arm called with speed of ", speed);
-        arm.setPower(speed);
+        arm.setPower(speed* Constants.ArmConstants.armSpeedMultiplier);
     }
 }

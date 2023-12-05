@@ -12,7 +12,15 @@ public final class Constants {
     }
 
     public static final class ArmConstants{
-        public static final double defaultArmSpeed = 0.5;
+        public static final double armSpeedMultiplier = 1;
+    }
+
+    public static final class WristConstants{
+        public static final double defaultWristAngle = 0.0;
+    }
+
+    public static final class PixelDropperConstants{
+        public static final double defaultPixelDropperSpeed = 1.0;
     }
 
     public static final class DroneConstants{
