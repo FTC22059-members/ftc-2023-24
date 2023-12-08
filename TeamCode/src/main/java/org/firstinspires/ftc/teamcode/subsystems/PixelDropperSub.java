@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -16,14 +17,15 @@ public class PixelDropperSub extends SubsystemBase {
 
     private Telemetry telemetry;
 
-    private Motor pixelDropper;
+    private CRServo pixelDropper;
     /**
      * Constructor for the imu
-     * @param hardwareMapParam The hardware map to be used in imu
-     * @param telemetryParam The telemetry to be used for printing things
+     * @param hardwareMapImport The hardware map to be used in imu
+     * @param telemetryImport The telemetry to be used for printing things
      */
-    public PixelDropperSub(HardwareMap hardwareMapParam, Telemetry telemetryParam) {
-        this.telemetry = telemetryParam;
+    public PixelDropperSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
+        this.telemetry = telemetryImport;
+        this.pixelDropper = hardwareMapImport.get(CRServo.class, "pixelDropperServo");
 
         //this.pixelDropper = new Motor(hardwareMapParam, "Pixel Dropper", Motor.GoBILDA.RPM_312);
     }
@@ -39,8 +41,8 @@ public class PixelDropperSub extends SubsystemBase {
     /**
      * The code to drop the pixel.
      */
-    public void dropPixel(){
-        telemetry.addLine("Pixel dropper called. ");
+    public void setSpeed(double speed){
+        telemetry.addData("Output called with speed of ", speed);
+        pixelDropper.setPower(speed);
     }
-
 }
