@@ -12,7 +12,7 @@ public final class Constants {
     }
 
     public static final class ArmConstants{
-        public static final double armSpeedMultiplier = 1;
+        public static final double armSpeedMultiplier = 0.5;
     }
 
     public static final class WristConstants{

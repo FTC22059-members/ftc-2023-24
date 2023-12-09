@@ -11,8 +11,10 @@ public class LinearSlideSub extends SubsystemBase {
 
     Telemetry telemetry;
 
-    DcMotor linearSlideMotor;
+    public DcMotor linearSlideMotor;
     DigitalChannel limitSwitch;
+
+    Boolean previouslyDown; // whether the arm was down last time move was ran.
 
     public LinearSlideSub(HardwareMap hardwareMap, Telemetry tm) {
         linearSlideMotor = hardwareMap.get(DcMotor.class, "linearSlideMotor");
@@ -20,6 +22,7 @@ public class LinearSlideSub extends SubsystemBase {
         this.telemetry = tm;
 
         limitSwitch.setMode(DigitalChannel.Mode.INPUT);
+//        linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
@@ -33,14 +36,17 @@ public class LinearSlideSub extends SubsystemBase {
     }
 
     public void move(double speed) {
+
         if (!(linearSlideMotor.getCurrentPosition() > 6000 && speed > 0)) {
-            if (!limitSwitch.getState()) { // if the arm is all the way down
-                if (linearSlideMotor.getCurrentPosition() != 0) {
-                    linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // reset encoders to 0
-                    linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                }
-                if (speed > 0) { // if the arm is moving up + it's all the way down
+            if (linearSlideMotor.getCurrentPosition()<=0) { // if the arm is all the way down
+//                if (linearSlideMotor.getCurrentPosition() != 0) { // if the encoder is offset, reset it to 0
+//                    linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // reset encoders to 0
+//                    linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//                }
+                if (speed > 0) { // if the arm is moving up + its all the way down
                     linearSlideMotor.setPower(speed);
+                } else { // if the arm is moving down + its all the way down
+                    linearSlideMotor.setPower(0);
                 }
             } else { // if the arm is not all the way down.
                 linearSlideMotor.setPower(speed);
