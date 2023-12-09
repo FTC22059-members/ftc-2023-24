@@ -3,45 +3,45 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
-import org.firstinspires.ftc.teamcode.subsystems.WristSub;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 
 /**
  * This command is dedicated to setting the wrist angle
  */
 
-public class WristCmd extends CommandBase {
+public class TrimWristCmd extends CommandBase {
 
-    private final WristSub wristSub;
+    private final ArmSub wristSub;
     double angle;
 
     /**
      * Set wrist to a certain angle
      *
-     * @param wristSub Wrist sub to import
+     * @param armSub Wrist sub to import
      * @param angle Angle
      */
 
 
-    public WristCmd(WristSub wristSub, double angle){
-        this.wristSub = wristSub;
+    public TrimWristCmd(ArmSub armSub, double angle){
+        this.wristSub = armSub;
         this.angle = angle;
-        addRequirements(wristSub);
+        addRequirements(armSub);
     }
 
     /**
      * Set wrist to default angle. This is an override function
      *
-     * @param wristSub Wrist sub to import
+     * @param armSub Wrist sub to import
      */
 
-    public WristCmd(WristSub wristSub){
-        this(wristSub, Constants.WristConstants.defaultWristAngle);
+    public TrimWristCmd(ArmSub armSub){
+        this(armSub, Constants.ArmConstants.wristTrimSpeed);
     }
 
     @Override
     public void execute(){
-        this.wristSub.setSpeed(this.angle);
+        System.out.println("set angle: " + this.angle);
+        this.wristSub.trimWrist(this.angle);
     }
 
     @Override
