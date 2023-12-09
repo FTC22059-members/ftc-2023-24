@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.arcrobotics.ftclib.command.FunctionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
-import org.firstinspires.ftc.teamcode.commands.ArmCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.MoveLinearSlideCmd;
@@ -22,7 +20,6 @@ import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.LinearSlideSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
-import org.firstinspires.ftc.teamcode.subsystems.LinearSlideSub;
 
 
 @TeleOp(name = "Tele-op 2023-24")
@@ -47,8 +44,6 @@ public class TeleOp24 extends CommandOpMode {
     private PixelDropperCmd outputOff;
     private TrimWristCmd trimWristUp;
     private TrimWristCmd trimWristDown;
-    private LinearSlideSub linearSlide;
-    private MoveLinearSlideCmd linearSlideCmd;
     @Override
     public void initialize(){
         robotImu = new ImuSub(hardwareMap, telemetry);
@@ -107,10 +102,6 @@ public class TeleOp24 extends CommandOpMode {
         // D-Pad (up/down): Move wrist
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(trimWristUp);
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(trimWristDown);
-
-
-        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {System.out.println("yo!");});
-        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {System.out.println("yo!");});
 
         register(drive);
         register(linearSlide);
