@@ -17,7 +17,7 @@ public class ArmSub extends SubsystemBase {
 
     private Telemetry telemetry;
 
-    private DcMotor arm;
+    public DcMotor arm;
     /**
      * Constructor for the imu
      * @param hardwareMapImport The hardware map to be used in imu
@@ -44,8 +44,19 @@ public class ArmSub extends SubsystemBase {
      * @param speed The speed that the intake goes.
      */
     public void setSpeed(double speed) {
-        telemetry.addData("Arm called with speed of ", speed);
-        arm.setPower(-speed*Constants.ArmConstants.armSpeedMultiplier);
+        // Ground Limit: 1700
+        // Outtake Limit: -50
+        // > 1700 going up -> YES
+        // > 1700 going down -> NO
+        // < -50 going up -> NO
+        // < -50 going down ->YES
+        if ((arm.getCurrentPosition() > 1700 && speed > 0) || (arm.getCurrentPosition() < -50 && speed < 0)) {
+            telemetry.addData("Arm Speed", speed);
+            arm.setPower(-speed*Constants.ArmConstants.armSpeedMultiplier);
+        } else {
+            arm.setPower(0);
+            telemetry.addData("Arm Speed", speed);
+        }
     }
 
     public int getCurrentPosition(){

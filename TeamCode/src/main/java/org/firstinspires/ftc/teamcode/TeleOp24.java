@@ -41,6 +41,7 @@ public class TeleOp24 extends CommandOpMode {
     private IntakeCmd intakeReverse;
     private IntakeCmd intakeOff;
     private ArmSub arm;
+    private ArmCmd armCmd;
     private PixelDropperSub output;
     private PixelDropperCmd outputOn;
     private PixelDropperCmd outputOff;
@@ -63,6 +64,7 @@ public class TeleOp24 extends CommandOpMode {
         linearSlide = new LinearSlideSub(hardwareMap, telemetry);
         linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
         arm = new ArmSub(hardwareMap, telemetry);
+        armCmd = new ArmCmd(arm, 0, telemetry,toolOp);
         output = new PixelDropperSub(hardwareMap, telemetry);
         outputOn = new PixelDropperCmd(output, Constants.PixelDropperConstants.defaultPixelDropperSpeed);
         outputOff = new PixelDropperCmd(output, 0);
@@ -110,7 +112,7 @@ public class TeleOp24 extends CommandOpMode {
 
         // Intake Arm
         // Left Joystick (up/down): Move arm
-        arm.setSpeed(toolOp.getLeftY());
+        armCmd.setSpeed(toolOp.getLeftY());
 
         telemetry.addData("Field Centric?", fieldCentric);
         telemetry.update();
