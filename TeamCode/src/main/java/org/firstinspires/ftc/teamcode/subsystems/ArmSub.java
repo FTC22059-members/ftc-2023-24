@@ -45,4 +45,8 @@ public class ArmSub extends SubsystemBase {
         telemetry.addData("Arm called with speed of ", speed);
         arm.setPower(speed* Constants.ArmConstants.armSpeedMultiplier);
     }
+
+    public int getCurrentPosition(){
+        return arm.getCurrentPosition();
+    }
 }
