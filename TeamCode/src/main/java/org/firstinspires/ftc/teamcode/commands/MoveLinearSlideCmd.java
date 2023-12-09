@@ -23,12 +23,6 @@ public class MoveLinearSlideCmd extends CommandBase {
 
     @Override
     public void execute(){
-        if (gamepad.getButton(GamepadKeys.Button.RIGHT_BUMPER)) {
-            linearSlideSub.move(1,1);
-        } else if (gamepad.getButton(GamepadKeys.Button.LEFT_BUMPER)) {
-            linearSlideSub.move(-1,1);
-        }
-
-
+        linearSlideSub.move(gamepad.getLeftY());
     }
 }

@@ -10,13 +10,16 @@ import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.commands.ArmCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
+import org.firstinspires.ftc.teamcode.commands.MoveLinearSlideCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
+
 import org.firstinspires.ftc.teamcode.commands.PlaneLaunchCmd;
 import org.firstinspires.ftc.teamcode.commands.WristCmd;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
+import org.firstinspires.ftc.teamcode.subsystems.LinearSlideSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 import org.firstinspires.ftc.teamcode.subsystems.WristSub;
 
@@ -28,6 +31,8 @@ public class TeleOp24 extends CommandOpMode {
     private GamepadEx toolOp;
     private DrivetrainSub drive;
     private DriveCmd driveCmd;
+    private LinearSlideSub linearSlide;
+    private MoveLinearSlideCmd linearSlideCmd;
     private boolean fieldCentric = false;
     private ImuSub robotImu;
     private PlaneLaunchCmd planeLaunchCmd;
@@ -55,6 +60,8 @@ public class TeleOp24 extends CommandOpMode {
         intakeOn = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed);
         intakeReverse = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed*-1);
         intakeOff = new IntakeCmd(intake,0);
+        linearSlide = new LinearSlideSub(hardwareMap, telemetry);
+        linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp);
         arm = new ArmSub(hardwareMap, telemetry);
         output = new PixelDropperSub(hardwareMap, telemetry);
         outputOn = new PixelDropperCmd(output, Constants.PixelDropperConstants.defaultPixelDropperSpeed);
@@ -91,7 +98,9 @@ public class TeleOp24 extends CommandOpMode {
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(wristDown);
 
         register(drive);
+        register(linearSlide);
         drive.setDefaultCommand(driveCmd);
+        linearSlide.setDefaultCommand(linearSlideCmd);
     }
 
     @Override
