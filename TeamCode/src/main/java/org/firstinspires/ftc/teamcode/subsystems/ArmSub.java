@@ -26,6 +26,8 @@ public class ArmSub extends SubsystemBase {
     public ArmSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
         this.telemetry = telemetryImport;
         this.arm = hardwareMapImport.get(DcMotor.class, "armMotor");
+
+        this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /**
@@ -43,6 +45,6 @@ public class ArmSub extends SubsystemBase {
      */
     public void setSpeed(double speed) {
         telemetry.addData("Arm called with speed of ", speed);
-        arm.setPower(speed* Constants.ArmConstants.armSpeedMultiplier);
+        arm.setPower(-speed*Constants.ArmConstants.armSpeedMultiplier);
     }
 }

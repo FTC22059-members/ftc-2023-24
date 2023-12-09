@@ -64,7 +64,7 @@ public class DriveCmd extends CommandBase {
             // optional fourth parameter for squared inputs
             drivetrainSub.getDrive().driveRobotCentric(
                     gamepad.getLeftX()*-brakeMultiplier,
-                    gamepad.getLeftY()*-brakeMultiplier,
+                    gamepad.getLeftY()*brakeMultiplier,
                     gamepad.getRightX()*-brakeMultiplier,
                     false
             );

@@ -61,7 +61,7 @@ public class TeleOp24 extends CommandOpMode {
         intakeReverse = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed*-1);
         intakeOff = new IntakeCmd(intake,0);
         linearSlide = new LinearSlideSub(hardwareMap, telemetry);
-        linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp);
+        linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
         arm = new ArmSub(hardwareMap, telemetry);
         output = new PixelDropperSub(hardwareMap, telemetry);
         outputOn = new PixelDropperCmd(output, Constants.PixelDropperConstants.defaultPixelDropperSpeed);
