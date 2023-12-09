@@ -13,10 +13,7 @@ public final class Constants {
 
     public static final class ArmConstants{
         public static final double armSpeedMultiplier = 0.5;
-    }
-
-    public static final class WristConstants{
-        public static final double defaultWristAngle = 0.0;
+        public static final double wristTrimSpeed = 0.1;
     }
 
     public static final class PixelDropperConstants{

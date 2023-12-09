@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.FunctionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -14,14 +15,14 @@ import org.firstinspires.ftc.teamcode.commands.MoveLinearSlideCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 
 import org.firstinspires.ftc.teamcode.commands.PlaneLaunchCmd;
-import org.firstinspires.ftc.teamcode.commands.WristCmd;
+import org.firstinspires.ftc.teamcode.commands.TrimWristCmd;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.LinearSlideSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
-import org.firstinspires.ftc.teamcode.subsystems.WristSub;
+import org.firstinspires.ftc.teamcode.subsystems.LinearSlideSub;
 
 
 @TeleOp(name = "Tele-op 2023-24")
@@ -44,31 +45,41 @@ public class TeleOp24 extends CommandOpMode {
     private PixelDropperSub output;
     private PixelDropperCmd outputOn;
     private PixelDropperCmd outputOff;
-    private WristSub wrist;
-    private WristCmd wristUp;
-    private WristCmd wristDown;
+    private TrimWristCmd trimWristUp;
+    private TrimWristCmd trimWristDown;
+    private LinearSlideSub linearSlide;
+    private MoveLinearSlideCmd linearSlideCmd;
     @Override
     public void initialize(){
         robotImu = new ImuSub(hardwareMap, telemetry);
 
         driverOp = new GamepadEx(gamepad1);
         toolOp = new GamepadEx(gamepad2);
+
         drive = new DrivetrainSub(hardwareMap, telemetry);
         driveCmd = new DriveCmd(drive, driverOp, robotImu::getAngle, this::getFieldCentric);
+
         planeLaunchCmd = new PlaneLaunchCmd(hardwareMap, telemetry);
+
+        // Initialize intake subsystem & commands
         intake = new IntakeSub(hardwareMap, telemetry);
         intakeOn = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed);
-        intakeReverse = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed*-1);
+        intakeReverse = new IntakeCmd(intake,-IntakeConstants.defaultIntakeSpeed);
         intakeOff = new IntakeCmd(intake,0);
-        linearSlide = new LinearSlideSub(hardwareMap, telemetry);
-        linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
-        arm = new ArmSub(hardwareMap, telemetry);
+
+        // Initialize outputter subsystem & commands
         output = new PixelDropperSub(hardwareMap, telemetry);
         outputOn = new PixelDropperCmd(output, Constants.PixelDropperConstants.defaultPixelDropperSpeed);
         outputOff = new PixelDropperCmd(output, 0);
-        wrist = new WristSub(hardwareMap, telemetry);
-        wristUp = new WristCmd(wrist, 1);
-        wristDown = new WristCmd(wrist, Constants.WristConstants.defaultWristAngle);
+
+        // Initialize arm subsystem & commands
+        arm = new ArmSub(hardwareMap, telemetry);
+        trimWristUp = new TrimWristCmd(arm, Constants.ArmConstants.wristTrimSpeed);
+        trimWristDown = new TrimWristCmd(arm, -Constants.ArmConstants.wristTrimSpeed);
+
+
+        linearSlide = new LinearSlideSub(hardwareMap, telemetry);
+        linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
 
         // Y: Toggle field centric
         driverOp.getGamepadButton(GamepadKeys.Button.Y)
@@ -94,8 +105,12 @@ public class TeleOp24 extends CommandOpMode {
 
         // Wrist
         // D-Pad (up/down): Move wrist
-        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(wristUp);
-        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(wristDown);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(trimWristUp);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(trimWristDown);
+
+
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(() -> {System.out.println("yo!");});
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(() -> {System.out.println("yo!");});
 
         register(drive);
         register(linearSlide);
