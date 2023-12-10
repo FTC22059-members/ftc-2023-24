@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
+import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
@@ -66,10 +67,10 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
-                    , turnCW(145)
-                    , drive(12)
+                    , new EjectCmd(intake)
+                    , turnCCW(15)
+                    , drive(-12)
                     , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
@@ -77,10 +78,10 @@ public class AutoRed2 extends CommandOpMode
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCW(75)
-                    , drive(12)
+                    , new EjectCmd(intake)
+                    , turnCCW(90)
+                    , drive(-12)
                     , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
@@ -89,10 +90,14 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
+                    , new EjectCmd(intake)
                     , turnCCW(75)
                     , drive(-18)
-                    , turnCW(55)
+                    , turnCW(90)
                     , drive(12)
+                    , turnCCW(90)
+                    , drive(18)
+                    , turnCW(90)
                     , new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
