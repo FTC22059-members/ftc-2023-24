@@ -146,7 +146,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , armDown
                     , new EjectCmd(intake)
                     , armNeutral
-                    , turnCCW(30)
+                    , turnCCW(120)
                     , drive(-23)
                     , turnCCW(85)
                     //, drive(18)
