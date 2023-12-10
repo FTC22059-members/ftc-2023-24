@@ -74,8 +74,8 @@ public class AutoRed2 extends CommandOpMode
 
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
-                    , turnCCW(75)
+                    drive(28)
+                    , turnCCW(90)
                     , armDown
                     , new EjectCmd(intake)
                     , armUp
@@ -90,14 +90,14 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , armDown
-                    , drive(4)
-                    , drive(-4)
+                    , drive(6)
+//                    , drive(-4)
                     , new EjectCmd(intake)
                     , drive(-2)
                     , armUp
                     , turnCCW(90)
-                    , drive(-31)
-                    , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , drive(-35)
+//                    , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
