@@ -27,9 +27,10 @@ public class ArmSub extends SubsystemBase {
      */
     public ArmSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
         this.telemetry = telemetryImport;
-        this.arm = hardwareMapImport.get(DcMotor.class, "armMotor");
 
+        this.arm = hardwareMapImport.get(DcMotor.class, "armMotor");
         this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         this.wrist = hardwareMapImport.get(Servo.class, "wristServo");
     }
 
@@ -40,6 +41,15 @@ public class ArmSub extends SubsystemBase {
     public void periodic() {
         //telemetry.addData("IMU heading", globalAngle);
     }
+
+    /**
+     * Reset the encoder
+     */
+    public void resetEncoder(){
+        this.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
 
     /**
      * Turns on the intake, with a speed.

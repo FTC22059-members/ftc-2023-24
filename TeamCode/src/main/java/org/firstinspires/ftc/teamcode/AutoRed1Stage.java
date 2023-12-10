@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.commands.ArmDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
@@ -12,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
@@ -32,9 +35,11 @@ public class AutoRed1Stage extends CommandOpMode
     private PixelDropperSub pixelDropper;
     private TeamPropVisionProcessor teamPropVisionProcessor;
     private VisionPortal teamPropVisionPortal;
-
+    private ArmSub arm;
 
     private boolean fieldCentric = true;
+
+
     @Override
     public void initialize(){
         //Initializing Hardware
@@ -43,6 +48,11 @@ public class AutoRed1Stage extends CommandOpMode
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        arm = new ArmSub(hardwareMap, telemetry);
+        arm.resetEncoder();
+
+        ArmDistanceCmd dropDown = new ArmDistanceCmd(arm,telemetry,-0.5,950);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,-0.5,600);
 
         teamPropVisionProcessor = new TeamPropVisionProcessor();
         teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
@@ -62,6 +72,9 @@ public class AutoRed1Stage extends CommandOpMode
         //Set up vision processor
         AprilTagVisionPortal aprilTagVisionPortal = new AprilTagVisionPortal(webcam.getWebcamName(), telemetry);
         aprilTagVisionPortal.initialize();
+
+        //schedule(new SequentialCommandGroup(dropDown, new EjectCmd(intake), armNeutral));
+                                           //,new InstantCommand(() -> {aprilTagVisionPortal.close();})));
 
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
@@ -86,10 +99,13 @@ public class AutoRed1Stage extends CommandOpMode
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , dropDown
                     , new EjectCmd(intake)
+                    //, armNeutral
                     , turnCCW(90)
-                    , new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
+                    , drive(12)
+                    //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    //, new IntakeCmd(intake)
                     , turnCW(90)
                     , drive(30)
                     , turnCW(90)
@@ -120,8 +136,9 @@ public class AutoRed1Stage extends CommandOpMode
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
-                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
-            ));
+                    , new InstantCommand(() -> {
+                aprilTagVisionPortal.close();
+            })));
         }
     }
 

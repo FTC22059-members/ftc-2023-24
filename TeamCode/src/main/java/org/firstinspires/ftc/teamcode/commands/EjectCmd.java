@@ -15,6 +15,8 @@ public class EjectCmd extends CommandBase {
 
     private final IntakeSub intakeSub;
     double speed;
+    long startTime;
+    int runDuration = 5000;
 
     /**
      * Eject pixel at a certain speed
@@ -27,6 +29,7 @@ public class EjectCmd extends CommandBase {
         this.intakeSub = intakeSubParam;
         this.speed = speedParam;
         addRequirements(intakeSubParam);
+        startTime=System.currentTimeMillis();
     }
 
     /**
@@ -46,6 +49,11 @@ public class EjectCmd extends CommandBase {
 
     @Override
     public boolean isFinished(){
-        return true;
+        return System.currentTimeMillis()-startTime>runDuration;
+    }
+
+    @Override
+    public void end(boolean interrupted){
+        this.intakeSub.setSpeed(0);
     }
 }
