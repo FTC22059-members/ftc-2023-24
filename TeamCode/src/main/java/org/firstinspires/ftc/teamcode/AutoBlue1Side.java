@@ -90,7 +90,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , armNeutral
                     , turnCW(30)
                     , drive(-23)
-                    , turnCCW(45)
+                    , turnCCW(37)
                     //, drive(18)
                     //, new IntakeCmd(intake)
                     //, turnCCW(85)
@@ -142,11 +142,11 @@ public class AutoBlue1Side extends CommandOpMode
         } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCCW(75)
+                    , turnCW(75)
                     , armDown
                     , new EjectCmd(intake)
                     , armNeutral
-                    , turnCW(30)
+                    , turnCCW(30)
                     , drive(-23)
                     , turnCCW(85)
                     //, drive(18)
