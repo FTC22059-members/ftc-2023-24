@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.commands.ArmDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
@@ -34,8 +36,8 @@ public class AutoRed1Side extends CommandOpMode
     private TeamPropVisionProcessor teamPropVisionProcessor;
     private VisionPortal teamPropVisionPortal;
 
+    private ArmSub arm;
 
-    private boolean fieldCentric = true;
     @Override
     public void initialize() {
         //Initializing Hardware
@@ -44,6 +46,13 @@ public class AutoRed1Side extends CommandOpMode
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        arm = new ArmSub(hardwareMap, telemetry);
+        arm.resetEncoder();
+
+        ArmDistanceCmd armDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
+        ArmDistanceCmd armUp = new ArmDistanceCmd(arm,telemetry,0.5,0);
+
         teamPropVisionProcessor = new TeamPropVisionProcessor();
         teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
 
@@ -68,15 +77,17 @@ public class AutoRed1Side extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
+                    , armDown
                     , new EjectCmd(intake)
+                    , armNeutral
                     , turnCW(75)
-                    , drive(23)
-                    , turnCCW(85)
-                    , drive(18)
-                    , new IntakeCmd(intake)
-                    , turnCCW(85)
-                    , drive(50)
-                    , turnCCW(81)
+                    , drive(-23)
+                    , turnCW(85)
+                    //, drive(18)
+                    //, new IntakeCmd(intake)
+                    //, turnCCW(85)
+                    //, drive(50)
+                    //, turnCCW(81)
                     , drive(65)
                     , turnCCW(30)
                     , drive(18)
@@ -89,10 +100,13 @@ public class AutoRed1Side extends CommandOpMode
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , armDown
                     , new EjectCmd(intake)
+                    , armNeutral
                     , turnCCW(90)
-                    , new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
+                    , drive(24)
+                    //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    //, new IntakeCmd(intake)
                     , turnCCW(78)
                     , drive(15)
                     , turnCCW(83)
@@ -109,10 +123,13 @@ public class AutoRed1Side extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
+                    , armDown
                     , new EjectCmd(intake)
+                    , armNeutral
                     , turnCCW(165)
-                    , new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
+                    , drive(24)
+                    //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    .., new IntakeCmd(intake)
                     , turnCCW(76)
                     , drive(15)
                     , turnCCW(83)

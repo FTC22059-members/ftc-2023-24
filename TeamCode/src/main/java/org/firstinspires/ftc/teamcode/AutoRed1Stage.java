@@ -49,7 +49,7 @@ public class AutoRed1Stage extends CommandOpMode
         arm = new ArmSub(hardwareMap, telemetry);
         arm.resetEncoder();
 
-        ArmDistanceCmd dropDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
+        ArmDistanceCmd armDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
         ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
         ArmDistanceCmd armUp = new ArmDistanceCmd(arm,telemetry,0.5,0);
 
@@ -72,14 +72,14 @@ public class AutoRed1Stage extends CommandOpMode
         AprilTagVisionPortal aprilTagVisionPortal = new AprilTagVisionPortal(webcam.getWebcamName(), telemetry);
         aprilTagVisionPortal.initialize();
 
-        //schedule(new SequentialCommandGroup(dropDown, new EjectCmd(intake), armNeutral));
+        //schedule(new SequentialCommandGroup(armDown, new EjectCmd(intake), armNeutral));
                                            //,new InstantCommand(() -> {aprilTagVisionPortal.close();})));
 
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
-                    , dropDown
+                    , armDown
                     //, drive(-2)
                     , new EjectCmd(intake)
                     , armNeutral
@@ -101,7 +101,7 @@ public class AutoRed1Stage extends CommandOpMode
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(20)
-                    , dropDown
+                    , armDown
                     , drive(6)
                     , new EjectCmd(intake)
                     , armNeutral
@@ -128,7 +128,7 @@ public class AutoRed1Stage extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
-                    , dropDown
+                    , armDown
                     , drive(-2)
                     , new EjectCmd(intake)
                     , armNeutral
