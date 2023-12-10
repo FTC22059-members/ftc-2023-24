@@ -102,7 +102,7 @@ public class AutoBlue1Stage extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(20)
                     , armDown
-                    , drive(6)
+                    , drive(4)
                     , new EjectCmd(intake)
                     , armNeutral
                     , drive(-3)
@@ -111,7 +111,7 @@ public class AutoBlue1Stage extends CommandOpMode
                     //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     //, new IntakeCmd(intake)
                     , turnCCW(90)
-                    , drive(30)
+                    , drive(32)
                     , turnCCW(90)
                     , drive(60) // drive through stage door
                     , turnCCW(25)
@@ -129,11 +129,12 @@ public class AutoBlue1Stage extends CommandOpMode
                     drive(24)
                     , turnCCW(75)
                     , armDown
-                    , drive(-2)
+//                    , drive(-2)
                     , new EjectCmd(intake)
                     , armNeutral
+                    , drive(-2)
                     , turnCW(75)
-                    , drive(24)
+                    , drive(26)
                     , turnCCW(90)
                     , drive(60) // drive through stage door
                     , turnCCW(45)
