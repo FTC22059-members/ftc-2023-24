@@ -104,6 +104,7 @@ public class AutoRed1Side extends CommandOpMode
                     , drive(6)
                     , new EjectCmd(intake)
                     , armNeutral
+                    , drive(-2)
                     , turnCW(45)
                     , drive(-24)
                     , turnCW(45)
