@@ -77,10 +77,11 @@ public class AutoRed2 extends CommandOpMode
                     drive(30)
                     , turnCCW(90)
                     , armDown
+                    , drive(-1)
                     , new EjectCmd(intake)
                     , armUp
                     , turnCCW(15)
-                    , drive(-30)
+                    , drive(-32)
                     , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
