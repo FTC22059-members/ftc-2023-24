@@ -5,12 +5,14 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.commands.ArmDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
@@ -29,6 +31,7 @@ public class AutoRed2 extends CommandOpMode
     private WebcamSub webcam;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
+    private ArmSub arm;
 
     private TeamPropVisionProcessor teamPropVisionProcessor;
     private VisionPortal teamPropVisionPortal;
@@ -43,6 +46,12 @@ public class AutoRed2 extends CommandOpMode
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        arm = new ArmSub(hardwareMap, telemetry);
+
+        ArmDistanceCmd armDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
+        ArmDistanceCmd armUp = new ArmDistanceCmd(arm,telemetry,0.5,0);
+
         teamPropVisionProcessor = new TeamPropVisionProcessor();
         teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
 
@@ -67,9 +76,11 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
+                    , armDown
                     , new EjectCmd(intake)
+                    , armUp
                     , turnCCW(15)
-                    , drive(-12)
+                    , drive(-30)
                     , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -78,9 +89,11 @@ public class AutoRed2 extends CommandOpMode
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , armDown
                     , new EjectCmd(intake)
+                    , armUp
                     , turnCCW(90)
-                    , drive(-12)
+                    , drive(-30)
                     , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -90,11 +103,13 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
+                    , armDown
                     , new EjectCmd(intake)
+                    , armUp
                     , turnCCW(75)
                     , drive(-18)
                     , turnCW(90)
-                    , drive(12)
+                    , drive(30)
                     , turnCCW(90)
                     , drive(18)
                     , turnCW(90)
