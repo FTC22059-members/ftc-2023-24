@@ -23,7 +23,7 @@ import org.opencv.imgproc.Imgproc;
 public class TeamPropVisionProcessor implements VisionProcessor {
     public Rect rectLeft = new Rect(10, 330, 200, 150);
     public Rect rectMiddle = new Rect(220, 220, 200, 150);
-    public Rect rectRight = new Rect(430, 180, 200, 150);
+    public Rect rectRight = new Rect(430, 220, 200, 150);
     Selected selection = Selected.NONE;
 
     Mat submat = new Mat();

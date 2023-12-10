@@ -22,7 +22,7 @@ public class LinearSlideSub extends SubsystemBase {
         this.telemetry = tm;
 
         limitSwitch.setMode(DigitalChannel.Mode.INPUT);
-//        linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
