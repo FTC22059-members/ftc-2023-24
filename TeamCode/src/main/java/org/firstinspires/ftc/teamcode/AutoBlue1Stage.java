@@ -2,10 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.commands.ArmDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
@@ -20,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-@Autonomous(name = "Autonomous Blue 1 Stage")
+@Autonomous(name = "Autonomous Red 1 Stage")
 public class AutoBlue1Stage extends CommandOpMode
 {
     private double turnSpeed = 0.4;
@@ -31,12 +33,11 @@ public class AutoBlue1Stage extends CommandOpMode
     private WebcamSub webcam;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
-
     private TeamPropVisionProcessor teamPropVisionProcessor;
     private VisionPortal teamPropVisionPortal;
+    private ArmSub arm;
 
 
-    private boolean fieldCentric = true;
     @Override
     public void initialize(){
         //Initializing Hardware
@@ -45,8 +46,15 @@ public class AutoBlue1Stage extends CommandOpMode
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        arm = new ArmSub(hardwareMap, telemetry);
+        arm.resetEncoder();
+
+        ArmDistanceCmd armDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
+        ArmDistanceCmd armUp = new ArmDistanceCmd(arm,telemetry,0.5,0);
+
         teamPropVisionProcessor = new TeamPropVisionProcessor();
-        teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), teamPropVisionProcessor);
+        teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
 
         //Find the position of team goal
         TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
@@ -56,7 +64,6 @@ public class AutoBlue1Stage extends CommandOpMode
             telemetry.addData("Branch = ", branch.toString());
             telemetry.update();
         }
-
         teamPropVisionPortal.close();
 
         waitForStart();
@@ -65,21 +72,27 @@ public class AutoBlue1Stage extends CommandOpMode
         AprilTagVisionPortal aprilTagVisionPortal = new AprilTagVisionPortal(webcam.getWebcamName(), telemetry);
         aprilTagVisionPortal.initialize();
 
-        if (branch == TeamPropVisionProcessor.Selected.LEFT) {
+        //schedule(new SequentialCommandGroup(armDown, new EjectCmd(intake), armNeutral));
+        //,new InstantCommand(() -> {aprilTagVisionPortal.close();})));
+
+        if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCCW(75)
+                    , turnCW(75)
+                    , armDown
+                    //, drive(-2)
                     , new EjectCmd(intake)
-                    , turnCW(165)
-                    , new DriveAprilTagCmd(10, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
-                    , turnCCW(82)
-                    , drive(30)
-                    , turnCCW(85)
-                    , drive(60)
-                    , turnCCW(35)
-                    , drive(18)
-                    , new DriveAprilTagCmd(1, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , armNeutral
+                    //, drive(-2)
+                    , turnCCW(75)
+                    , drive(24)
+                    , turnCCW(90)
+                    , drive(60) // drive through stage door
+                    , turnCCW(45)
+                    , drive(12)
+                    , armUp
+                    //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , drive(24)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
@@ -87,52 +100,60 @@ public class AutoBlue1Stage extends CommandOpMode
             ));
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
+                    drive(20)
+                    , armDown
+                    , drive(6)
                     , new EjectCmd(intake)
+                    , armNeutral
+                    , drive(-3)
                     , turnCW(90)
-                    , new DriveAprilTagCmd(10, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
-                    , turnCCW(82)
+                    , drive(12)
+                    //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    //, new IntakeCmd(intake)
+                    , turnCCW(90)
                     , drive(30)
-                    , turnCCW(85)
-                    , drive(72)
+                    , turnCCW(90)
+                    , drive(60) // drive through stage door
                     , turnCCW(25)
                     , drive(12)
-                    , new DriveAprilTagCmd(2, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , armUp
+                    //, new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , drive(24)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
             ));
-        } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {schedule(new SequentialCommandGroup(
-                drive(24)
-                , turnCW(75)
-                , new EjectCmd(intake)
-                , turnCCW(70)
-                , drive(24)
-                , turnCW(90)
-                , drive(16)
-                , new IntakeCmd(intake)
-                , turnCW(180)
-                , drive(72)
-                , turnCCW(30)
-                , drive(12)
-                , new DriveAprilTagCmd(3, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                , turnCW(180)
-                , new PixelDropperCmd(pixelDropper)
-                , new PixelDropperCmd(pixelDropper)
-                , new InstantCommand(() -> {aprilTagVisionPortal.close();})
-        ));
+        } else if (branch == TeamPropVisionProcessor.Selected.LEFT) {
+            schedule(new SequentialCommandGroup(
+                    drive(24)
+                    , turnCCW(75)
+                    , armDown
+                    , drive(-2)
+                    , new EjectCmd(intake)
+                    , armNeutral
+                    , turnCW(75)
+                    , drive(24)
+                    , turnCCW(90)
+                    , drive(60) // drive through stage door
+                    , turnCCW(45)
+                    , drive(12)
+                    , armUp
+                    , new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , turnCW(180)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
+            ));
         }
-
     }
 
-    public TurnCmd turnCW(int angle){
-        return new TurnCmd(-angle,turnSpeed,drive,imu,telemetry);
+    public TurnCmd turnCW(int angleParam){
+        return new TurnCmd(-angleParam,turnSpeed,drive,imu,telemetry);
     }
 
-    public TurnCmd turnCCW(int angle){
-        return new TurnCmd(angle,turnSpeed,drive,imu,telemetry);
+    public TurnCmd turnCCW(int angleParam){
+        return new TurnCmd(angleParam,turnSpeed,drive,imu,telemetry);
     }
 
     public DriveDistanceCmd drive(int inches){
