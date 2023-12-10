@@ -76,7 +76,6 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(30)
                     , turnCCW(90)
-                    , drive(-2)
                     , armDown
                     , new EjectCmd(intake)
                     , armUp
