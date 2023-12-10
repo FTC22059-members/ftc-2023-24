@@ -99,17 +99,18 @@ public class AutoRed1Side extends CommandOpMode
             ));
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
+                    drive(20)
                     , armDown
+                    , drive(6)
                     , new EjectCmd(intake)
                     , armNeutral
-                    , turnCCW(90)
-                    , drive(24)
+                    , drive(-24)
+                    , turnCW(90)
                     //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     //, new IntakeCmd(intake)
-                    , turnCCW(78)
-                    , drive(15)
-                    , turnCCW(83)
+                    //, turnCCW(78)
+                    //, drive(15)
+                    //, turnCCW(83)
                     , drive(60)
                     , turnCCW(20)
                     , drive(12)
