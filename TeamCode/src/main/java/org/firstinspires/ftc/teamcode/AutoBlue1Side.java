@@ -83,7 +83,7 @@ public class AutoBlue1Side extends CommandOpMode
             //  ##### ##### #       #
 
             schedule(new SequentialCommandGroup(
-                    drive(24)
+                    drive(22)
                     , turnCCW(75)
                     , armDown
                     , new EjectCmd(intake)
@@ -99,7 +99,8 @@ public class AutoBlue1Side extends CommandOpMode
                     , drive(65)
                     , turnCW(30)
                     , drive(18)
-                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , drive(24)
+                    //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
