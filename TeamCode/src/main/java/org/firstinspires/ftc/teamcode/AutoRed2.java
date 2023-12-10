@@ -75,10 +75,12 @@ public class AutoRed2 extends CommandOpMode
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCCW(75)
+                    , turnCCW(90)
                     , armDown
+                    , drive(4)
                     , new EjectCmd(intake)
                     , armUp
+                    , drive(-4)
                     , turnCCW(15)
                     , drive(-30)
                     , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
