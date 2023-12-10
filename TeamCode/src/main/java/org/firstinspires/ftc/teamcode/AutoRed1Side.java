@@ -129,7 +129,7 @@ public class AutoRed1Side extends CommandOpMode
                     , turnCCW(165)
                     , drive(24)
                     //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    .., new IntakeCmd(intake)
+                    //, new IntakeCmd(intake)
                     , turnCCW(76)
                     , drive(15)
                     , turnCCW(83)
