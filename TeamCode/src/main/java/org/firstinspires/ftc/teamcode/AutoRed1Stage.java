@@ -65,7 +65,7 @@ public class AutoRed1Stage extends CommandOpMode
             telemetry.update();
         }
         teamPropVisionPortal.close();
-        
+
         waitForStart();
 
         //Set up vision processor
@@ -73,23 +73,27 @@ public class AutoRed1Stage extends CommandOpMode
         aprilTagVisionPortal.initialize();
 
         //schedule(new SequentialCommandGroup(armDown, new EjectCmd(intake), armNeutral));
-                                           //,new InstantCommand(() -> {aprilTagVisionPortal.close();})));
+        //,new InstantCommand(() -> {aprilTagVisionPortal.close();})));
 
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCCW(75)
                     , armDown
+                    //, drive(-2)
                     , new EjectCmd(intake)
                     , armNeutral
-                    , drive(-4)
-                    , drive(-22)
-                    , turnCCW(15)
-                    , drive(-12)
+                    //, drive(-2)
+                    , turnCW(75)
+                    , drive(24)
+                    , turnCW(90)
+                    , drive(60)
+                    , turnCW(45)
+                    , drive(12)
                     , armUp
                     //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-//                    , drive(24)
-//                    , turnCW(180)
+                    , drive(24)
+                    , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
