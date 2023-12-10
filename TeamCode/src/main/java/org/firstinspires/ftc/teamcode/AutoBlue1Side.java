@@ -99,7 +99,7 @@ public class AutoBlue1Side extends CommandOpMode
                     , drive(65)
                     , turnCW(30)
                     , drive(18)
-                    , drive(24)
+                    , drive(22)
                     //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCCW(180)
                     , new PixelDropperCmd(pixelDropper)
