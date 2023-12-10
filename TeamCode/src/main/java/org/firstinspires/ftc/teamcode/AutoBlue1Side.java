@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.commands.ArmDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
 import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
@@ -31,9 +33,11 @@ public class AutoBlue1Side extends CommandOpMode
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
 
+
     private TeamPropVisionProcessor teamPropVisionProcessor;
     private VisionPortal teamPropVisionPortal;
 
+    private ArmSub arm;
 
     private boolean fieldCentric = true;
     @Override
@@ -44,6 +48,12 @@ public class AutoBlue1Side extends CommandOpMode
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        arm = new ArmSub(hardwareMap, telemetry);
+        arm.resetEncoder();
+
+        ArmDistanceCmd armDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
+        ArmDistanceCmd armUp = new ArmDistanceCmd(arm,telemetry,0.5,0);
         teamPropVisionProcessor = new TeamPropVisionProcessor();
         teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
 
@@ -74,22 +84,27 @@ public class AutoBlue1Side extends CommandOpMode
 
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCCW(75)
+                    , turnCW(75)
+                    , armDown
                     , new EjectCmd(intake)
-                    , turnCW(165)
-                    , new DriveAprilTagCmd(10, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
-                    , turnCW(88)
+                    , armNeutral
+                    , turnCCW(75)
+                    , drive(-23)
+                    , turnCCW(85)
+                    //, drive(18)
+                    //, new IntakeCmd(intake)
+                    //, turnCCW(85)
+                    //, drive(50)
+                    //, turnCCW(81)
+                    , drive(65)
+                    , turnCW(30)
                     , drive(18)
-                    , turnCW(91)
-                    , drive(60)
-                    , turnCW(20)
-                    , drive(12)
-                    , new DriveAprilTagCmd(1, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
+                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , turnCCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
+            ));
             ));
 
             //   ###  ##### #    # ##### ##### ####
@@ -100,19 +115,20 @@ public class AutoBlue1Side extends CommandOpMode
 
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
+                    drive(20)
+                    , armDown
+                    , drive(6)
                     , new EjectCmd(intake)
-                    , turnCW(88)
-                    , new DriveAprilTagCmd(10, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new IntakeCmd(intake)
-                    , turnCW(90)
-                    , drive(18)
-                    , turnCW(91)
-                    , drive(66)
+                    , armNeutral
+                    , drive(-2)
+                    , turnCCW(45)
+                    , drive(-24)
+                    , turnCCW(45)
+                    , drive(72)
                     , turnCW(20)
-                    , drive(12)
-                    , new DriveAprilTagCmd(2, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
+                    , drive(24)
+                    //, new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , turnCCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
@@ -128,20 +144,22 @@ public class AutoBlue1Side extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , turnCW(75)
+                    , armDown
                     , new EjectCmd(intake)
-                    , turnCCW(73)
-                    , drive(23)
-                    , turnCW(88)
-                    , drive(18)
-                    , new IntakeCmd(intake)
-                    , turnCW(88)
-                    , drive(47)
-                    , turnCW(91)
+                    , armNeutral
+                    , turnCCW(75)
+                    , drive(-23)
+                    , turnCCW(85)
+                    //, drive(18)
+                    //, new IntakeCmd(intake)
+                    //, turnCCW(85)
+                    //, drive(50)
+                    //, turnCCW(81)
                     , drive(65)
-                    , turnCW(25)
+                    , turnCW(30)
                     , drive(18)
-                    , new DriveAprilTagCmd(3, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
+                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , turnCCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
