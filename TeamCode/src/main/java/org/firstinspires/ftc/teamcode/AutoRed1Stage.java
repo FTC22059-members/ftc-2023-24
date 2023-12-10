@@ -80,12 +80,11 @@ public class AutoRed1Stage extends CommandOpMode
                     drive(24)
                     , turnCCW(75)
                     , armDown
-                    //, drive(-2)
                     , new EjectCmd(intake)
                     , armNeutral
                     , drive(-4)
                     , drive(-22)
-                    , turnCW(45)
+                    , turnCCW(15)
                     , drive(-12)
                     , armUp
                     //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
