@@ -110,6 +110,7 @@ public class AutoRed2 extends CommandOpMode
                     , drive(-2)
                     , armDown
                     , drive(2)
+                    , drive(-2)
                     , new EjectCmd(intake)
                     , armUp
                     , turnCCW(90)
