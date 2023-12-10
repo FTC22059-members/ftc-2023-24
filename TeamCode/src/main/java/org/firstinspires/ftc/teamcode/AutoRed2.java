@@ -74,8 +74,9 @@ public class AutoRed2 extends CommandOpMode
 
         if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
-                    drive(28)
+                    drive(30)
                     , turnCCW(90)
+                    , drive(-2)
                     , armDown
                     , new EjectCmd(intake)
                     , armUp
