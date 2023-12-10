@@ -15,7 +15,6 @@ public class ArmDistanceCmd extends CommandBase {
     private Telemetry telemetry;
     private double speed;
     private int position;
-    private boolean moveDownward;
 
     /**
      * Intake pixel at a certain speed
@@ -27,16 +26,8 @@ public class ArmDistanceCmd extends CommandBase {
     public ArmDistanceCmd(ArmSub armSub, Telemetry telemetry, double speed, int position){
         this.armSub = armSub;
         this.telemetry = telemetry;
-        System.out.println(armSub.getCurrentPosition()+";; "+position+"; "+moveDownward+"; "+speed);
-        if (position>armSub.getCurrentPosition()){
-            moveDownward = true;
-            this.speed = speed;
-        }else{
-            moveDownward = false;
-            this.speed = -speed;
-        }
+        this.speed = speed;
         this.position=position;
-        System.out.println(armSub.getCurrentPosition()+";;; "+position+"; "+moveDownward+"; "+speed);
 
         addRequirements(armSub);
     }
@@ -45,17 +36,15 @@ public class ArmDistanceCmd extends CommandBase {
     public void execute(){
         this.armSub.setSpeed(this.speed);
         telemetry.addData("Position",this.armSub.getCurrentPosition());
-        System.out.println(armSub.getCurrentPosition()+"; "+position+"; "+moveDownward+"; "+speed);
     }
 
     @Override
     public boolean isFinished(){
-        if(moveDownward){
+        if(speed<0){
             return this.armSub.getCurrentPosition()>=position;
         }else{
             return this.armSub.getCurrentPosition()<=position;
         }
-
     }
 
     @Override

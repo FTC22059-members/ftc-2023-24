@@ -51,8 +51,8 @@ public class AutoRed1Stage extends CommandOpMode
         arm = new ArmSub(hardwareMap, telemetry);
         arm.resetEncoder();
 
-        ArmDistanceCmd dropDown = new ArmDistanceCmd(arm,telemetry,-0.5,950);
-        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,-0.5,600);
+        ArmDistanceCmd dropDown = new ArmDistanceCmd(arm,telemetry,-0.5,1050);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
 
         teamPropVisionProcessor = new TeamPropVisionProcessor();
         teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
@@ -98,10 +98,11 @@ public class AutoRed1Stage extends CommandOpMode
             ));
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
+                    drive(20)
                     , dropDown
+                    , drive(2)
                     , new EjectCmd(intake)
-                    //, armNeutral
+                    , armNeutral
                     , turnCCW(90)
                     , drive(12)
                     //, new DriveAprilTagCmd(8, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
@@ -109,7 +110,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , turnCW(90)
                     , drive(30)
                     , turnCW(90)
-                    , drive(72)
+                    , drive(60)
                     , turnCW(25)
                     , drive(12)
                     , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
