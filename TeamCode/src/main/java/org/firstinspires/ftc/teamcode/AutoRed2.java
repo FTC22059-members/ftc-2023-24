@@ -90,10 +90,13 @@ public class AutoRed2 extends CommandOpMode
             schedule(new SequentialCommandGroup(
                     drive(24)
                     , armDown
+                    , drive(4)
+                    , drive(-4)
                     , new EjectCmd(intake)
+                    , drive(-2)
                     , armUp
                     , turnCCW(90)
-                    , drive(-30)
+                    , drive(-31)
                     , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
