@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -37,6 +38,11 @@ public class DrivetrainSub extends SubsystemBase {
         this.frontRight = new Motor(hardwareMapParam, "frontRight", Motor.GoBILDA.RPM_312);
         this.backLeft = new Motor(hardwareMapParam, "backLeft", Motor.GoBILDA.RPM_312);
         this.backRight = new Motor(hardwareMapParam, "backRight", Motor.GoBILDA.RPM_312);
+
+        this.frontLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        this.frontRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        this.backLeft.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        this.backRight.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
         this.drive = new MecanumDrive(this.frontLeft, this.frontRight, this.backLeft, this.backRight);
         this.drive.setMaxSpeed(DriveConstants.driveMaxSpeed);
@@ -100,9 +106,6 @@ public class DrivetrainSub extends SubsystemBase {
     public double getFrontLeftEncoderDistance() {
         telemetry.addData("Revs",frontLeft.encoder.getRevolutions());
         telemetry.addData("Final",frontLeft.encoder.getRevolutions() * DriveConstants.wheelDiameter * Math.PI);
-
-        System.out.println("Revs: " + frontLeft.encoder.getRevolutions());
-        System.out.println(("Final: "+(frontLeft.encoder.getRevolutions() * DriveConstants.wheelDiameter * Math.PI)));
 
         return frontLeft.encoder.getRevolutions() * DriveConstants.wheelDiameter * Math.PI;
     }
