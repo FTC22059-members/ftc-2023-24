@@ -84,13 +84,13 @@ public class AutoBlue1Side extends CommandOpMode
 
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCW(75)
+                    , turnCCW(75)
                     , armDown
                     , new EjectCmd(intake)
                     , armNeutral
-                    , turnCCW(75)
+                    , turnCW(30)
                     , drive(-23)
-                    , turnCCW(85)
+                    , turnCCW(45)
                     //, drive(18)
                     //, new IntakeCmd(intake)
                     //, turnCCW(85)
@@ -104,7 +104,6 @@ public class AutoBlue1Side extends CommandOpMode
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
-            ));
             ));
 
             //   ###  ##### #    # ##### ##### ####
@@ -143,11 +142,11 @@ public class AutoBlue1Side extends CommandOpMode
         } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
                     drive(24)
-                    , turnCW(75)
+                    , turnCCW(75)
                     , armDown
                     , new EjectCmd(intake)
                     , armNeutral
-                    , turnCCW(75)
+                    , turnCW(30)
                     , drive(-23)
                     , turnCCW(85)
                     //, drive(18)
