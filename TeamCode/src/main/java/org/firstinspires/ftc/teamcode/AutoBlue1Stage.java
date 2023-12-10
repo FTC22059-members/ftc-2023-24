@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
 
-@Autonomous(name = "Autonomous Red 1 Stage")
+@Autonomous(name = "Autonomous Blue 1 Stage")
 public class AutoBlue1Stage extends CommandOpMode
 {
     private double turnSpeed = 0.4;
