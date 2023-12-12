@@ -82,7 +82,7 @@ public class AutoRed2 extends CommandOpMode
                     , armUp
                     , turnCCW(15)
                     , drive(-32)
-                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+//                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
@@ -92,7 +92,6 @@ public class AutoRed2 extends CommandOpMode
                     drive(24)
                     , armDown
                     , drive(6)
-//                    , drive(-4)
                     , new EjectCmd(intake)
                     , drive(-2)
                     , armUp
@@ -105,14 +104,13 @@ public class AutoRed2 extends CommandOpMode
             ));
         } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
-                    drive(30)
+                    drive(29)
                     , turnCW(90)
                     , drive(-2)
                     , armDown
-                    , drive(2)
-                    , drive(-2)
                     , new EjectCmd(intake)
                     , armUp
+                    , drive(3)
                     , turnCCW(90)
                     , drive(-16)
                     , turnCCW(105)

@@ -5,17 +5,18 @@ import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.commands.ArmDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveAprilTagCmd;
 import org.firstinspires.ftc.teamcode.commands.DriveDistanceCmd;
 import org.firstinspires.ftc.teamcode.commands.EjectCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.TurnCmd;
+import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
-import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
 
@@ -30,6 +31,8 @@ public class AutoBlue2 extends CommandOpMode
     private WebcamSub webcam;
     private IntakeSub intake;
     private PixelDropperSub pixelDropper;
+    private ArmSub arm;
+
     private TeamPropVisionProcessor teamPropVisionProcessor;
     private VisionPortal teamPropVisionPortal;
 
@@ -43,8 +46,14 @@ public class AutoBlue2 extends CommandOpMode
         webcam = new WebcamSub(hardwareMap, telemetry);
         intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
+        arm = new ArmSub(hardwareMap, telemetry);
+
+        ArmDistanceCmd armDown = new ArmDistanceCmd(arm,telemetry,-0.5,1000);
+        ArmDistanceCmd armNeutral = new ArmDistanceCmd(arm,telemetry,0.5,850);
+        ArmDistanceCmd armUp = new ArmDistanceCmd(arm,telemetry,0.5,0);
+
         teamPropVisionProcessor = new TeamPropVisionProcessor();
-        teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), teamPropVisionProcessor);
+        teamPropVisionPortal = VisionPortal.easyCreateWithDefaults(webcam.getWebcamName(), teamPropVisionProcessor);
 
         //Find the position of team goal
         TeamPropVisionProcessor.Selected branch = TeamPropVisionProcessor.Selected.NONE;
@@ -63,17 +72,17 @@ public class AutoBlue2 extends CommandOpMode
         AprilTagVisionPortal aprilTagVisionPortal = new AprilTagVisionPortal(webcam.getWebcamName(), telemetry);
         aprilTagVisionPortal.initialize();
 
-        if (branch == TeamPropVisionProcessor.Selected.LEFT) {
+        if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
-                    , turnCCW(75)
+                    drive(30)
+                    , turnCW(90)
+                    , armDown
+                    , drive(-1)
                     , new EjectCmd(intake)
-                    , turnCW(75)
-                    , drive(-18)
-                    , turnCCW(75)
-                    , drive(12)
-                    , new DriveAprilTagCmd(1, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
+                    , armUp
+                    , turnCW(15)
+                    , drive(-32)
+//                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
@@ -81,24 +90,33 @@ public class AutoBlue2 extends CommandOpMode
         }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
             schedule(new SequentialCommandGroup(
                     drive(24)
+                    , armDown
+                    , drive(4)
                     , new EjectCmd(intake)
-                    , turnCCW(85)
-                    , drive(12)
-                    , new DriveAprilTagCmd(2, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
+                    , drive(-2)
+                    , armUp
+                    , turnCW(90)
+                    , drive(-34)
+//                    , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
             ));
         } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
             schedule(new SequentialCommandGroup(
-                    drive(24)
-                    , turnCW(75)
+                    drive(29)
+                    , turnCCW(90)
+                    , drive(-2)
+                    , armDown
                     , new EjectCmd(intake)
-                    , turnCCW(165)
-                    , drive(12)
-                    , new DriveAprilTagCmd(3, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , turnCW(180)
+                    , armUp
+                    , drive(3)
+                    , turnCW(90)
+                    , drive(-16)
+                    , turnCW(105)
+                    , drive(-35)
+                    , turnCCW(15)
+//                    , new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
@@ -117,6 +135,4 @@ public class AutoBlue2 extends CommandOpMode
     public DriveDistanceCmd drive(int inches){
         return new DriveDistanceCmd(inches, driveSpeed, drive, telemetry);
     }
-
-
 }
