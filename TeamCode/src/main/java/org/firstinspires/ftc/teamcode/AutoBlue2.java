@@ -72,37 +72,7 @@ public class AutoBlue2 extends CommandOpMode
         AprilTagVisionPortal aprilTagVisionPortal = new AprilTagVisionPortal(webcam.getWebcamName(), telemetry);
         aprilTagVisionPortal.initialize();
 
-        if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
-            schedule(new SequentialCommandGroup(
-                    drive(30)
-                    , turnCW(90)
-                    , armDown
-                    , drive(-1)
-                    , new EjectCmd(intake)
-                    , armUp
-                    , turnCW(15)
-                    , drive(-32)
-//                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new PixelDropperCmd(pixelDropper)
-                    , new PixelDropperCmd(pixelDropper)
-                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
-            ));
-        }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
-            schedule(new SequentialCommandGroup(
-                    drive(24)
-                    , armDown
-                    , drive(4)
-                    , new EjectCmd(intake)
-                    , drive(-2)
-                    , armUp
-                    , turnCW(90)
-                    , drive(-34)
-//                    , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                    , new PixelDropperCmd(pixelDropper)
-                    , new PixelDropperCmd(pixelDropper)
-                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
-            ));
-        } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
+        if (branch == TeamPropVisionProcessor.Selected.LEFT) {
             schedule(new SequentialCommandGroup(
                     drive(29)
                     , turnCCW(90)
@@ -121,6 +91,36 @@ public class AutoBlue2 extends CommandOpMode
                     , new PixelDropperCmd(pixelDropper)
                     , new InstantCommand(() -> {aprilTagVisionPortal.close();})
             ));
+        }else if (branch == TeamPropVisionProcessor.Selected.MIDDLE) {
+            schedule(new SequentialCommandGroup(
+                    drive(20)
+                    , armDown
+                    , drive(4)
+                    , new EjectCmd(intake)
+                    , drive(-2)
+                    , armUp
+                    , turnCW(90)
+                    , drive(-34)
+//                    , new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new PixelDropperCmd(pixelDropper)
+                    , new InstantCommand(() -> {aprilTagVisionPortal.close();})
+            ));
+        } else if (branch == TeamPropVisionProcessor.Selected.RIGHT) {
+    schedule(new SequentialCommandGroup(
+            drive(30)
+            , turnCW(90)
+            , armDown
+            , drive(-1)
+            , new EjectCmd(intake)
+            , armUp
+            , turnCCW(15)
+            , drive(-32)
+//                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+            , new PixelDropperCmd(pixelDropper)
+            , new PixelDropperCmd(pixelDropper)
+            , new InstantCommand(() -> {aprilTagVisionPortal.close();})
+    ));
         }
     }
 
