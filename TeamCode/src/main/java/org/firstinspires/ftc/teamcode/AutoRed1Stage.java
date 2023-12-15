@@ -139,7 +139,7 @@ public class AutoRed1Stage extends CommandOpMode
                     , turnCW(45)
                     , drive(12)
                     , armUp
-                    , new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    //, new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)

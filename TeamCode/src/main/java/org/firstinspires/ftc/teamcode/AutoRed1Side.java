@@ -91,7 +91,7 @@ public class AutoRed1Side extends CommandOpMode
                     , drive(65)
                     , turnCCW(30)
                     , drive(18)
-                    , new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
+                    //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
                     , turnCW(180)
                     , new PixelDropperCmd(pixelDropper)
                     , new PixelDropperCmd(pixelDropper)
