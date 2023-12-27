@@ -44,7 +44,7 @@
 3 => =>
 
 ### Digital Devices
-0 => =>
+0 => Digital Device => linearSlideLimitSwitch
 1 => =>
 2 => =>
 3 => =>
