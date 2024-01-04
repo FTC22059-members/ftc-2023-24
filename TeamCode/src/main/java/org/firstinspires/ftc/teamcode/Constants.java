@@ -5,6 +5,10 @@ public final class Constants {
         public static final double driveMaxSpeed = 0.6;
         public static final boolean doINeedMoreConstants = true;
         public static final double wheelDiameter = 96/25.4;
+        public static final double sensorWarningDistance = 12;
+        public static final double sensorDangerDistance = 3;
+        public static final double sensorEdgeDistance = 3;
+        public static final double intakeMaxSpeed = 0.6;
     }
 
     public static final class IntakeConstants{
