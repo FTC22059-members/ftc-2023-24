@@ -3,9 +3,7 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
-
-import java.util.function.DoubleSupplier;
+import org.firstinspires.ftc.teamcode.subsystems.OldIntakeSub;
 
 /**
  * This command is dedicated to ejecting pixels through the output
@@ -13,7 +11,7 @@ import java.util.function.DoubleSupplier;
 
 public class EjectCmd extends CommandBase {
 
-    private final IntakeSub intakeSub;
+    private final OldIntakeSub intakeSub;
     double speed;
     long startTime;
     int runDuration = 2000;
@@ -26,7 +24,7 @@ public class EjectCmd extends CommandBase {
      * @param speedParam Speed to eject at
      */
 
-    public EjectCmd(IntakeSub intakeSubParam, double speedParam){
+    public EjectCmd(OldIntakeSub intakeSubParam, double speedParam){
         this.intakeSub = intakeSubParam;
         this.speed = speedParam;
         addRequirements(intakeSubParam);
@@ -39,7 +37,7 @@ public class EjectCmd extends CommandBase {
      * @param intakeSubParam Intake sub to import
      */
 
-    public EjectCmd(IntakeSub intakeSubParam){
+    public EjectCmd(OldIntakeSub intakeSubParam){
         this(intakeSubParam, Constants.IntakeConstants.defaultIntakeSpeed);
     }
 

@@ -1,52 +1,35 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 
-import java.util.function.DoubleSupplier;
-
-/**
- * This command is dedicated to ejecting pixels through the intake
- */
-
 public class IntakeCmd extends CommandBase {
 
-    private final IntakeSub intakeSub;
-    double speed;
+    private final IntakeSub newIntakeSub;
+    private final GamepadEx gamepad2;
 
-    /**
-     * Intake pixel at a certain speed
-     *
-     * @param intakeSub Intake sub to import
-     * @param speed Speed to eject at
-     */
+    Telemetry telemetry;
 
-
-    public IntakeCmd(IntakeSub intakeSub, double speed){
-        this.intakeSub = intakeSub;
-        this.speed = speed;
-        addRequirements(intakeSub);
-    }
-
-    /**
-     * Intake pixel at the default speed. This is an override function
-     *
-     * @param intakeSub Intake sub to import
-     */
-
-    public IntakeCmd(IntakeSub intakeSub){
-        this(intakeSub, Constants.IntakeConstants.defaultIntakeSpeed);
+    public IntakeCmd(IntakeSub nis, GamepadEx gp2, Telemetry tm) {
+        newIntakeSub = nis;
+        gamepad2 = gp2;
+        addRequirements(newIntakeSub);
+        telemetry = tm;
     }
 
     @Override
-    public void execute(){
-        this.intakeSub.setSpeed(this.speed);
-    }
-
-    @Override
-    public boolean isFinished(){
-        return true;
+    public void execute() {
+        double rightSpeed = Constants.DriveConstants.intakeMaxSpeed *
+                gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+        telemetry.addData("Right Trigger", rightSpeed);
+        double leftSpeed = Constants.DriveConstants.intakeMaxSpeed *
+                gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+        telemetry.addData("Left Trigger", leftSpeed);
+        newIntakeSub.move(leftSpeed - rightSpeed);
     }
 }
