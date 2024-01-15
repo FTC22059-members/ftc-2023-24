@@ -12,22 +12,18 @@ public class LinearSlideSub extends SubsystemBase {
     Telemetry telemetry;
 
     public DcMotor linearSlideMotor;
-    DigitalChannel limitSwitch;
 
     Boolean previouslyDown; // whether the arm was down last time move was ran.
 
     public LinearSlideSub(HardwareMap hardwareMap, Telemetry tm) {
         linearSlideMotor = hardwareMap.get(DcMotor.class, "linearSlideMotor");
-        limitSwitch = hardwareMap.get(DigitalChannel.class, "linearSlideLimitSwitch");
         this.telemetry = tm;
 
-        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
         linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     @Override
     public void periodic() {
-        telemetry.addData("isArmDown", !limitSwitch.getState());
         telemetry.addData("armPos", linearSlideMotor.getCurrentPosition());
     }
 

@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.commands.DriveCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.MoveLinearSlideCmd;
@@ -36,13 +37,16 @@ public class TeleOp24 extends CommandOpMode {
     private ImuSub robotImu;
     private PlaneLaunchCmd planeLaunchCmd;
     private IntakeSub intake;
-    private IntakeCmd intakeCmd;
+    private IntakeCmd intakeOn;
+    private IntakeCmd intakeReverse;
+    private IntakeCmd intakeOff;
     private ArmSub arm;
     private PixelDropperSub output;
     private PixelDropperCmd outputOn;
     private PixelDropperCmd outputOff;
     private TrimWristCmd trimWristUp;
     private TrimWristCmd trimWristDown;
+    private TrimWristCmd trimWristIdle;
     private WallDistanceSub wallDistanceSub;
     private WallDistanceLEDSub wallDistanceLEDSub;
     private WallDistanceIndicatorCmd wallDistanceIndicator;
@@ -61,7 +65,9 @@ public class TeleOp24 extends CommandOpMode {
 
         // Initialize intake subsystem & commands
         intake = new IntakeSub(hardwareMap, telemetry);
-        intakeCmd = new IntakeCmd(intake, toolOp, telemetry);
+        intakeOn = new IntakeCmd(intake,IntakeConstants.defaultIntakeSpeed);
+        intakeReverse = new IntakeCmd(intake,-IntakeConstants.defaultIntakeSpeed);
+        intakeOff = new IntakeCmd(intake,0);
 
         // Initialize outputter subsystem & commands
         output = new PixelDropperSub(hardwareMap, telemetry);
@@ -73,6 +79,7 @@ public class TeleOp24 extends CommandOpMode {
         arm = new ArmSub(hardwareMap, telemetry);
         trimWristUp = new TrimWristCmd(arm, Constants.ArmConstants.wristTrimSpeed);
         trimWristDown = new TrimWristCmd(arm, -Constants.ArmConstants.wristTrimSpeed);
+        trimWristIdle = new TrimWristCmd(arm, 0);
 
         linearSlide = new LinearSlideSub(hardwareMap, telemetry);
         linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
@@ -85,6 +92,15 @@ public class TeleOp24 extends CommandOpMode {
         toolOp.getGamepadButton(GamepadKeys.Button.X)
                 .whenPressed(planeLaunchCmd);
 
+        // Intake
+        // A (hold): Take in pixel
+        // B (hold): Spit out pixel
+        toolOp.getGamepadButton(GamepadKeys.Button.A).whenPressed(intakeOn);
+        toolOp.getGamepadButton(GamepadKeys.Button.A).whenReleased(intakeOff);
+
+        toolOp.getGamepadButton(GamepadKeys.Button.B).whenPressed(intakeReverse);
+        toolOp.getGamepadButton(GamepadKeys.Button.B).whenReleased(intakeOff);
+
         // Output
         // Y (hold): Output pixel
         toolOp.getGamepadButton(GamepadKeys.Button.Y).whenPressed(outputOn);
@@ -93,7 +109,10 @@ public class TeleOp24 extends CommandOpMode {
         // Wrist
         // D-Pad (up/down): Move wrist
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(trimWristUp);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenReleased(trimWristIdle);
+
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(trimWristDown);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenReleased(trimWristIdle);
 
         wallDistanceSub = new WallDistanceSub(hardwareMap, telemetry);
         wallDistanceLEDSub = new WallDistanceLEDSub(hardwareMap, telemetry);
@@ -116,7 +135,6 @@ public class TeleOp24 extends CommandOpMode {
 
         //If this is still here by the competition, Zach is a dissapointment to his family, friends, and the entire team.
         wallDistanceIndicator.execute();
-        intakeCmd.execute();
 
         telemetry.addData("Field Centric?", fieldCentric);
         telemetry.update();

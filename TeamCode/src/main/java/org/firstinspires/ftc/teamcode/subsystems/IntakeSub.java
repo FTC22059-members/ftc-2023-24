@@ -1,35 +1,47 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+/**
+ * This subsystem is dedicated to interfacing with the Intake
+ * It can only turn on the intake
+ */
+
 public class IntakeSub extends SubsystemBase {
 
-    Telemetry telemetry;
 
-    public DcMotor intakeMotor;
+    private Telemetry telemetry;
 
-    Boolean previouslyDown; // whether the arm was down last time move was ran.
-
-    public IntakeSub(HardwareMap hardwareMap, Telemetry tm) {
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        this.telemetry = tm;
-
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    private CRServo intake;
+    /**
+     * Constructor for the imu
+     * @param hardwareMapImport The hardware map to be used in imu
+     * @param telemetryImport The telemetry to be used for printing things
+     */
+    public IntakeSub(HardwareMap hardwareMapImport, Telemetry telemetryImport) {
+        this.telemetry = telemetryImport;
+        this.intake = hardwareMapImport.get(CRServo.class, "intakeServo");
     }
 
+    /**
+     * Code to run the Intake's loop. Currently prints heading.
+     */
     @Override
     public void periodic() {
+        //telemetry.addData("IMU heading", globalAngle);
     }
 
-    public DcMotor getMotor() {
-        return intakeMotor;
-    }
-
-    public void move(double speed) {
-        intakeMotor.setPower(speed);
+    /**
+     * Turns on the intake, with a speed.
+     *
+     * @param speed The speed that the intake goes.
+     */
+    public void setSpeed(double speed) {
+        telemetry.addData("Intake called with speed of ", speed);
+        intake.setPower(speed);
     }
 }

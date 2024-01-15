@@ -11,7 +11,8 @@ import org.firstinspires.ftc.teamcode.processors.TeamPropVisionProcessor;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
-import org.firstinspires.ftc.teamcode.subsystems.OldIntakeSub;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeTubeSub;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSub;
 import org.firstinspires.ftc.teamcode.subsystems.PixelDropperSub;
 import org.firstinspires.ftc.teamcode.subsystems.WebcamSub;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -24,7 +25,7 @@ public class AutoCommandOpMode extends CommandOpMode
     private DrivetrainSub drive;
     private ImuSub imu;
     private WebcamSub webcam;
-    protected OldIntakeSub intake;
+    protected IntakeSub intake;
     protected PixelDropperSub pixelDropper;
 
     protected ArmDistanceCmd armDown;
@@ -43,7 +44,7 @@ public class AutoCommandOpMode extends CommandOpMode
         drive = new DrivetrainSub(hardwareMap, telemetry);
         imu = new ImuSub(hardwareMap, telemetry);
         webcam = new WebcamSub(hardwareMap, telemetry);
-        intake = new OldIntakeSub(hardwareMap, telemetry);
+        intake = new IntakeSub(hardwareMap, telemetry);
         pixelDropper = new PixelDropperSub(hardwareMap, telemetry);
         arm = new ArmSub(hardwareMap, telemetry);
         arm.resetEncoder();
