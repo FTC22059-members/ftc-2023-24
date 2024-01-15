@@ -75,7 +75,7 @@
 |Port|Type|Name|
 |---:|---|---|
 |0 | | |
-|1 | REV 2M Distance Sensor | Back left distance sensor |
-|2 | REV 2M Distance Sensor | Back right distance sensor |
+|1 | REV 2M Distance Sensor | Distance1 |
+|2 | REV 2M Distance Sensor | Distance2 |
 |3 | | |
 #### Webcam 1
