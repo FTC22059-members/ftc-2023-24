@@ -1,10 +1,10 @@
-**Configuration: "Config 2024"**
+# Configuration: "Config 2024"
 
-# Control Hub Portal:
+## Control Hub Portal:
 
-## Control Hub:
+### Control Hub:
 
-### Motors
+#### Motors
 |Port|Type|Name|
 |---:|---|---|
 |0 | GoBilda 5202/3/4 series | frontRight |
@@ -12,7 +12,7 @@
 |2 | GoBilda 5202/3/4 series | backRight |
 |3 | GoBilda 5202/3/4 series | backLeft |
 
-### Servos
+#### Servos
 |Port|Type|Name|
 |---:|---|---|
 |0 | Servo | wristServo |
@@ -20,7 +20,7 @@
 |2 | | |
 |3 | | |
 
-### Digital Devices
+#### Digital Devices
 |Port|Type|Name|
 |---:|---|---|
 |0 | | |
@@ -32,7 +32,7 @@
 |6 | | |
 |7 | | |
 
-# I2C Bus 0
+#### I2C Bus 0
 |Port|Type|Name|
 |---:|---|---|
 |0 | REV internal IMU (BHI260AP) | imu |
@@ -40,9 +40,9 @@
 |2 | REV 2M Distance Sensor | Back right distance sensor |
 |3 | | |
 
-## Expansion Hub
+### Expansion Hub
 
-### Motors
+#### Motors
 |Port|Type|Name|
 |---:|---|---|
 |0 | REV Robotics 40:1 HD Hex Motor | linearSlideMotor |
@@ -50,7 +50,7 @@
 |2 | | |
 |3 | | |
 
-### Servos
+#### Servos
 |Port|Type|Name|
 |---:|---|---|
 |0 | Continous Rotation Servo | intakeServo |
@@ -58,7 +58,7 @@
 |2 | | |
 |3 | | |
 
-### Digital Devices
+#### Digital Devices
 |Port|Type|Name|
 |---:|---|---|
 |0 | Digital Device | Green |
@@ -70,4 +70,4 @@
 |6 | | |
 |7 | | |
 
-### Webcam 1
+#### Webcam 1
