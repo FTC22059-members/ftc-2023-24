@@ -36,8 +36,8 @@
 |Port|Type|Name|
 |---:|---|---|
 |0 | REV internal IMU (BHI260AP) | imu |
-|1 | REV 2M Distance Sensor | Back left distance sensor |
-|2 | REV 2M Distance Sensor | Back right distance sensor |
+|1 | | |
+|2 | | |
 |3 | | |
 
 ### Expansion Hub
@@ -61,8 +61,8 @@
 #### Digital Devices
 |Port|Type|Name|
 |---:|---|---|
-|0 | Digital Device | Green |
-|1 | Digital Device | Red |
+|0 | Digital Device | wallDistanceRed |
+|1 | Digital Device | wallDistanceGreen |
 |2 | | |
 |3 | | |
 |4 | | |
@@ -70,4 +70,12 @@
 |6 | | |
 |7 | | |
 
+
+#### I2C Bus 0
+|Port|Type|Name|
+|---:|---|---|
+|0 | | |
+|1 | REV 2M Distance Sensor | Back left distance sensor |
+|2 | REV 2M Distance Sensor | Back right distance sensor |
+|3 | | |
 #### Webcam 1
