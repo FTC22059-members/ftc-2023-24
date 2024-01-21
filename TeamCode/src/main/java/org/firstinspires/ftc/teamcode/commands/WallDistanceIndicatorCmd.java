@@ -48,7 +48,8 @@ public class WallDistanceIndicatorCmd extends CommandBase {
             LED.setColor("R");
             telemetry.addLine("color: red");
         }
-        telemetry.addData("Distance from wall", distanceSensor.getDistance());
-        telemetry.addData("Adjusted Distance from wall", adjustedDistance);
+        telemetry.addData("L Distance from wall", String.format("%.2f", distanceSensor.getDistance(1)));
+        telemetry.addData("R Distance from wall", String.format("%.2f", distanceSensor.getDistance(2)));
+        telemetry.addData("Average Distance from wall", String.format("%.2f", distanceSensor.getDistance()));
     }
 }

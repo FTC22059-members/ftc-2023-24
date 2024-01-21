@@ -40,7 +40,6 @@ public class TrimWristCmd extends CommandBase {
 
     @Override
     public void execute(){
-        System.out.println("set angle: " + this.angle);
         this.wristSub.trimWrist(this.angle);
     }
 

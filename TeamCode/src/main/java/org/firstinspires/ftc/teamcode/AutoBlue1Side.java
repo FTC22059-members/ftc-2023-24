@@ -3,77 +3,63 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.EjectCmd;
-import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
-
 @Autonomous(name = "Blue1Side", group = "Blue")
-
 public class AutoBlue1Side extends AutoCommandOpMode {
     @Override
     public void leftLogic() {
         schedule(new SequentialCommandGroup(
-                drive(22)
-                , turnCCW(75)
+                drive(16)
+                , turnCCW(38)
+                , drive(11)
+                , drive(-16)
+                , turnCCW(8)
+                , drive(-13)
+                , turnCCW(36)
                 , armDown
-                , new EjectCmd(intake)
                 , armNeutral
-                , turnCW(30)
-                , drive(-26)
-                , turnCCW(41)
-                , drive(65)
-                , turnCW(30)
-                , drive(18)
-                , drive(22)
-                //, new DriveAprilTagCmd(4, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                , turnCCW(180)
-                , new PixelDropperCmd(pixelDropper)
-                , new PixelDropperCmd(pixelDropper)
+                , drive(62)
+                , turnCW(15)
+                , drive(13)
+                , turnCW(146)
+                , drive(-27)
         ));
     }
 
     @Override
     public void centerLogic() {
         schedule(new SequentialCommandGroup(
-                drive(20)
-                , armDown
-                , drive(4)
-                , new EjectCmd(intake)
-                , armNeutral
-                , drive(-2)
+                drive(30)
+                , drive(-5)
                 , turnCCW(45)
-                , drive(-23)
-                , turnCCW(36)
-                , drive(72)
-                , turnCW(20)
-                , drive(24)
-                //, new DriveAprilTagCmd(5, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                , turnCCW(180)
-                , new PixelDropperCmd(pixelDropper)
-                , new PixelDropperCmd(pixelDropper)
+                , drive(-24)
+                , turnCCW(39)
+                , armDown
+                , armNeutral
+                , drive(62)
+                , turnCW(10)
+                , drive(12)
+                , turnCW(161)
+                , drive(-32)
         ));
     }
 
     @Override
     public void rightLogic() {
         schedule(new SequentialCommandGroup(
-                drive(24)
-                , turnCW(75)
+                drive(12)
+                , turnCW(35)
+                , drive(14)
+                , drive(-10)
+                , turnCCW(35)
+                , drive(-12)
+                , turnCCW(88)
                 , armDown
-                , new EjectCmd(intake)
                 , armNeutral
-                , drive(-1)
-                , turnCCW(75)
-                , turnCCW(43)
-                , drive(-27)
-                , turnCCW(38)
-                , drive(65)
-                , turnCW(30)
-                , drive(18)
-                , drive(16)
-                //, new DriveAprilTagCmd(6, aprilTagVisionPortal.getVisionProcessor(), drive, telemetry)
-                , turnCCW(180)
-                , new PixelDropperCmd(pixelDropper)
-                , new PixelDropperCmd(pixelDropper)
+                , drive(55)
+                , turnCW(10)
+                , drive(13)
+                , turnCW(158)
+                , drive(-22)
         ));
     }
 }

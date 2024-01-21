@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.PlaneLaunchCmd;
 import org.firstinspires.ftc.teamcode.commands.TrimWristCmd;
 import org.firstinspires.ftc.teamcode.commands.WallDistanceIndicatorCmd;
+import org.firstinspires.ftc.teamcode.commands.SquareCmd;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
@@ -50,6 +51,8 @@ public class TeleOp24 extends CommandOpMode {
     private WallDistanceSub wallDistanceSub;
     private WallDistanceLEDSub wallDistanceLEDSub;
     private WallDistanceIndicatorCmd wallDistanceIndicator;
+    private SquareCmd squareCmd;
+
 
     @Override
     public void initialize() {
@@ -61,7 +64,7 @@ public class TeleOp24 extends CommandOpMode {
         drive = new DrivetrainSub(hardwareMap, telemetry);
         driveCmd = new DriveCmd(drive, driverOp, robotImu::getAngle, this::getFieldCentric);
 
-        planeLaunchCmd = new PlaneLaunchCmd(hardwareMap, telemetry);
+        //planeLaunchCmd = new PlaneLaunchCmd(hardwareMap, telemetry);
 
         // Initialize intake subsystem & commands
         intake = new IntakeSub(hardwareMap, telemetry);
@@ -79,10 +82,15 @@ public class TeleOp24 extends CommandOpMode {
         arm = new ArmSub(hardwareMap, telemetry);
         trimWristUp = new TrimWristCmd(arm, Constants.ArmConstants.wristTrimSpeed);
         trimWristDown = new TrimWristCmd(arm, -Constants.ArmConstants.wristTrimSpeed);
-        trimWristIdle = new TrimWristCmd(arm, 0);
 
         linearSlide = new LinearSlideSub(hardwareMap, telemetry);
         linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
+
+        wallDistanceSub = new WallDistanceSub(hardwareMap, telemetry);
+        wallDistanceLEDSub = new WallDistanceLEDSub(hardwareMap, telemetry);
+        wallDistanceIndicator = new WallDistanceIndicatorCmd(wallDistanceSub, wallDistanceLEDSub, telemetry);
+
+        squareCmd = new SquareCmd(drive,telemetry,wallDistanceSub);
 
         // Y: Toggle field centric
         driverOp.getGamepadButton(GamepadKeys.Button.Y)
@@ -109,14 +117,12 @@ public class TeleOp24 extends CommandOpMode {
         // Wrist
         // D-Pad (up/down): Move wrist
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(trimWristUp);
-        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenReleased(trimWristIdle);
 
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(trimWristDown);
-        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenReleased(trimWristIdle);
 
-        wallDistanceSub = new WallDistanceSub(hardwareMap, telemetry);
-        wallDistanceLEDSub = new WallDistanceLEDSub(hardwareMap, telemetry);
-        wallDistanceIndicator = new WallDistanceIndicatorCmd(wallDistanceSub, wallDistanceLEDSub, telemetry);
+        driverOp.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(squareCmd);
+
+
 
         register(drive);
         register(linearSlide);
@@ -127,7 +133,6 @@ public class TeleOp24 extends CommandOpMode {
     @Override
     public void run() {
         super.run();
-        telemetry.addLine("This is a new op mode");
 
         // Intake Arm
         // Left Joystick (up/down): Move arm

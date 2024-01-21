@@ -3,19 +3,18 @@ package org.firstinspires.ftc.teamcode;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Red2", group = "Red")
-public class AutoRed2 extends AutoCommandOpMode {
+@Autonomous(name = "Red1Short", group = "Red")
+public class AutoRed1Short extends AutoCommandOpMode {
     @Override
     public void leftLogic() {
         schedule(new SequentialCommandGroup(
-            drive(16)
-            , turnCCW(40)
-            , drive(12)
-            , drive(-24)
-            , turnCCW(45)
+            drive(12)
+            , turnCCW(35)
+            , drive(15)
             , drive(-10)
-            , turnCW(5)
-            , drive(-20)
+            , turnCW(35)
+            , armDown
+            , armNeutral
         ));
     }
 
@@ -23,23 +22,22 @@ public class AutoRed2 extends AutoCommandOpMode {
     public void centerLogic() {
         schedule(new SequentialCommandGroup(
             drive(32)
-            , drive(-28)
-            , turnCCW(86)
-            , drive(-42)
+            , drive(-6)
+            , armDown
+            , armNeutral
         ));
     }
 
     @Override
     public void rightLogic() {
         schedule(new SequentialCommandGroup(
-            drive(12)
+            drive(16)
             , turnCW(35)
             , drive(11)
-            , drive(-6)
-            , turnCCW(90)
-            , drive(-18)
-            , turnCCW(32)
-            , drive(-23)
+            , drive(-16)
+            , turnCCW(35)
+            , armDown
+            , armNeutral
         ));
     }
 }
