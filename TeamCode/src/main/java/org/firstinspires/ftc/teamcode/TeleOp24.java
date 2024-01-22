@@ -10,11 +10,11 @@ import org.firstinspires.ftc.teamcode.Constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.commands.DriveCmd;
 import org.firstinspires.ftc.teamcode.commands.IntakeCmd;
 import org.firstinspires.ftc.teamcode.commands.MoveLinearSlideCmd;
+import org.firstinspires.ftc.teamcode.commands.MoveLinearSlideNoLimitsCmd;
 import org.firstinspires.ftc.teamcode.commands.PixelDropperCmd;
 import org.firstinspires.ftc.teamcode.commands.PlaneLaunchCmd;
 import org.firstinspires.ftc.teamcode.commands.TrimWristCmd;
 import org.firstinspires.ftc.teamcode.commands.WallDistanceIndicatorCmd;
-import org.firstinspires.ftc.teamcode.commands.SquareCmd;
 import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 import org.firstinspires.ftc.teamcode.subsystems.DrivetrainSub;
 import org.firstinspires.ftc.teamcode.subsystems.ImuSub;
@@ -51,8 +51,8 @@ public class TeleOp24 extends CommandOpMode {
     private WallDistanceSub wallDistanceSub;
     private WallDistanceLEDSub wallDistanceLEDSub;
     private WallDistanceIndicatorCmd wallDistanceIndicator;
-    private SquareCmd squareCmd;
-
+    private MoveLinearSlideNoLimitsCmd linearSlideDown;
+    private MoveLinearSlideNoLimitsCmd linearSlideReset;
 
     @Override
     public void initialize() {
@@ -63,8 +63,6 @@ public class TeleOp24 extends CommandOpMode {
 
         drive = new DrivetrainSub(hardwareMap, telemetry);
         driveCmd = new DriveCmd(drive, driverOp, robotImu::getAngle, this::getFieldCentric);
-
-        //planeLaunchCmd = new PlaneLaunchCmd(hardwareMap, telemetry);
 
         // Initialize intake subsystem & commands
         intake = new IntakeSub(hardwareMap, telemetry);
@@ -85,20 +83,16 @@ public class TeleOp24 extends CommandOpMode {
 
         linearSlide = new LinearSlideSub(hardwareMap, telemetry);
         linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
+        linearSlideDown = new MoveLinearSlideNoLimitsCmd(linearSlide, telemetry, -0.3);
+        linearSlideReset = new MoveLinearSlideNoLimitsCmd(linearSlide, telemetry, 0);
 
         wallDistanceSub = new WallDistanceSub(hardwareMap, telemetry);
         wallDistanceLEDSub = new WallDistanceLEDSub(hardwareMap, telemetry);
         wallDistanceIndicator = new WallDistanceIndicatorCmd(wallDistanceSub, wallDistanceLEDSub, telemetry);
 
-        squareCmd = new SquareCmd(drive,telemetry,wallDistanceSub);
-
         // Y: Toggle field centric
         driverOp.getGamepadButton(GamepadKeys.Button.Y)
                 .whenPressed(new InstantCommand(this::toggleFieldCentric));
-
-        // X: Launch plane
-        toolOp.getGamepadButton(GamepadKeys.Button.X)
-                .whenPressed(planeLaunchCmd);
 
         // Intake
         // A (hold): Take in pixel
@@ -114,15 +108,13 @@ public class TeleOp24 extends CommandOpMode {
         toolOp.getGamepadButton(GamepadKeys.Button.Y).whenPressed(outputOn);
         toolOp.getGamepadButton(GamepadKeys.Button.Y).whenReleased(outputOff);
 
+        toolOp.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(linearSlideDown);
+        toolOp.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(linearSlideReset);
+
         // Wrist
         // D-Pad (up/down): Move wrist
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(trimWristUp);
-
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(trimWristDown);
-
-        driverOp.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(squareCmd);
-
-
 
         register(drive);
         register(linearSlide);
@@ -138,7 +130,6 @@ public class TeleOp24 extends CommandOpMode {
         // Left Joystick (up/down): Move arm
         arm.setSpeed(toolOp.getLeftY());
 
-        //If this is still here by the competition, Zach is a dissapointment to his family, friends, and the entire team.
         wallDistanceIndicator.execute();
 
         telemetry.addData("Field Centric?", fieldCentric);

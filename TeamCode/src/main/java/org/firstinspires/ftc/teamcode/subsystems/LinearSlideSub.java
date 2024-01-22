@@ -24,37 +24,47 @@ public class LinearSlideSub extends SubsystemBase {
 
     @Override
     public void periodic() {
-        telemetry.addData("armPos", linearSlideMotor.getCurrentPosition());
+        telemetry.addData("Slide Height", linearSlideMotor.getCurrentPosition());
     }
 
     public DcMotor getMotor(){
         return linearSlideMotor;
     }
 
+    /**
+     * Reset the encoder
+     */
+    public void resetEncoder(){
+        this.linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        this.linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    //         > 6000 + going up   ->    N
+    //         > 6000 + going down ->    Y
+    //         < 6000 + going up   ->    Y
+    //         < 6000 + going down ->    Y
     public void move(double speed) {
-
-        if (!(linearSlideMotor.getCurrentPosition() > 6000 && speed > 0)) {
-            if (linearSlideMotor.getCurrentPosition()<=0) { // if the arm is all the way down
-//                if (linearSlideMotor.getCurrentPosition() != 0) { // if the encoder is offset, reset it to 0
-//                    linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // reset encoders to 0
-//                    linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//                }
-                if (speed > 0) { // if the arm is moving up + its all the way down
-                    linearSlideMotor.setPower(speed);
-                } else { // if the arm is moving down + its all the way down
-                    linearSlideMotor.setPower(0);
-                }
-            } else { // if the arm is not all the way down.
-                linearSlideMotor.setPower(speed);
-            }
-        } else { // stop the slide from moving if we're above 6000
+        // Stop motor if above top limit
+        if (linearSlideMotor.getCurrentPosition() > 6000 && speed > 0) {
             linearSlideMotor.setPower(0);
+        }else if (linearSlideMotor.getCurrentPosition()<=0) { // if the arm is all the way down
+            if (speed > 0) { // if the arm is moving up + its all the way down
+                linearSlideMotor.setPower(speed);
+            } else { // if the arm is moving down + its all the way down
+                linearSlideMotor.setPower(0);
+            }
+        } else { // if the arm is not all the way down.
+            linearSlideMotor.setPower(speed);
+        }
     }
 
-//         > 6000 + going up   ->    N
-//         > 6000 + going down ->    Y
-//         < 6000 + going up   ->    Y
-//         < 6000 + going down ->    Y
 
+    //special move command that doesn't adhere to limits
+    public void moveNoLimit(double speed) {
+        linearSlideMotor.setPower(speed);
     }
+
+
+
+
 }

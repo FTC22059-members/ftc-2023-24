@@ -52,7 +52,6 @@ public class EjectCmd extends CommandBase {
 
     @Override
     public boolean isFinished(){
-        System.out.println(System.currentTimeMillis()+"; "+startTime+"; "+(System.currentTimeMillis()-startTime));
         return System.currentTimeMillis()-startTime>runDuration;
     }
 
