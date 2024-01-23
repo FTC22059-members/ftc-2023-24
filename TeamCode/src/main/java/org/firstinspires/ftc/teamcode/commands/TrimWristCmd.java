@@ -12,19 +12,20 @@ import org.firstinspires.ftc.teamcode.subsystems.ArmSub;
 public class TrimWristCmd extends CommandBase {
 
     private final ArmSub wristSub;
-    double angle;
+    double speed;
 
     /**
      * Set wrist to a certain angle
      *
      * @param armSub Wrist sub to import
-     * @param angle Angle
+     * @param speed Angle
      */
 
 
-    public TrimWristCmd(ArmSub armSub, double angle){
+    public TrimWristCmd(ArmSub armSub, double speed){
         this.wristSub = armSub;
-        this.angle = angle;
+        this.speed = speed;
+
         addRequirements(armSub);
     }
 
@@ -40,7 +41,7 @@ public class TrimWristCmd extends CommandBase {
 
     @Override
     public void execute(){
-        this.wristSub.trimWrist(this.angle);
+        this.wristSub.trimWrist(this.speed);
     }
 
     @Override

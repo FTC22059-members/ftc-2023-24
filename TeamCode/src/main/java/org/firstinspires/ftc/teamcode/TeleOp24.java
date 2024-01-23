@@ -47,7 +47,7 @@ public class TeleOp24 extends CommandOpMode {
     private PixelDropperCmd outputOff;
     private TrimWristCmd trimWristUp;
     private TrimWristCmd trimWristDown;
-    private TrimWristCmd trimWristIdle;
+    private TrimWristCmd trimWristOff;
     private WallDistanceSub wallDistanceSub;
     private WallDistanceLEDSub wallDistanceLEDSub;
     private WallDistanceIndicatorCmd wallDistanceIndicator;
@@ -80,6 +80,7 @@ public class TeleOp24 extends CommandOpMode {
         arm = new ArmSub(hardwareMap, telemetry);
         trimWristUp = new TrimWristCmd(arm, Constants.ArmConstants.wristTrimSpeed);
         trimWristDown = new TrimWristCmd(arm, -Constants.ArmConstants.wristTrimSpeed);
+        trimWristOff = new TrimWristCmd(arm, 0);
 
         linearSlide = new LinearSlideSub(hardwareMap, telemetry);
         linearSlideCmd = new MoveLinearSlideCmd(linearSlide, toolOp, telemetry);
@@ -115,6 +116,8 @@ public class TeleOp24 extends CommandOpMode {
         // D-Pad (up/down): Move wrist
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(trimWristUp);
         toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(trimWristDown);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenReleased(trimWristOff);
+        toolOp.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenReleased(trimWristOff);
 
         register(drive);
         register(linearSlide);

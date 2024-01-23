@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Constants;
@@ -19,7 +19,7 @@ public class ArmSub extends SubsystemBase {
     private Telemetry telemetry;
 
     private DcMotor arm;
-    private Servo wrist;
+    private CRServo wrist;
     /**
      * Constructor for the imu
      * @param hardwareMapImport The hardware map to be used in imu
@@ -31,7 +31,7 @@ public class ArmSub extends SubsystemBase {
         this.arm = hardwareMapImport.get(DcMotor.class, "armMotor");
         this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        this.wrist = hardwareMapImport.get(Servo.class, "wristServo");
+        this.wrist = hardwareMapImport.get(CRServo.class, "wristServo");
     }
 
     /**
@@ -65,7 +65,7 @@ public class ArmSub extends SubsystemBase {
         return arm.getCurrentPosition();
     }
 
-    public void trimWrist(double delta) {
-        wrist.setPosition(wrist.getPosition() + delta);
+    public void trimWrist(double speed) {
+        wrist.setPower(speed);
     }
 }
